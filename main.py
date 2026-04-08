@@ -8,6 +8,7 @@ from config import STATIC_DOMAINS
 from core.domain_tester import DomainTester
 from core.voter import Voter
 from core.ipfs_publisher import IPFSPublisher
+from core.open_slum_parser import extract_domains_from_html, test_domain
 
 def clear_screen():
     os.system('clear' if os.name == 'posix' else 'cls')
@@ -35,6 +36,7 @@ def main():
         print("  5. Ver dominios pendientes")
         print("  6. Publicar reporte en IPFS")
         print("  7. Mostrar último hash IPFS")
+        print("  8. 🌐 Rastrear open-slum y buscar nuevos dominios")
         print("  0. Salir")
         print("-" * 50)
         
@@ -68,7 +70,8 @@ def main():
             else:
                 print("\nDominios pendientes:")
                 for i, d in enumerate(pending):
-                    print(f"  {i+1}. {d}")
+                    votes = voter.domains.get(d, {}).get("votes", 0)
+                    print(f"  {i+1}. {d} (votos: {votes})")
                 try:
                     idx = int(input("\nElige número para votar: ")) - 1
                     if 0 <= idx < len(pending):
@@ -82,7 +85,8 @@ def main():
             if pending:
                 print("\nDominios pendientes:")
                 for d in pending:
-                    print(f"  • {d}")
+                    votes = voter.domains.get(d, {}).get("votes", 0)
+                    print(f"  • {d} (votos: {votes})")
             else:
                 print("\n[!] No hay dominios pendientes.")
             input("\nPresiona Enter...")
@@ -99,12 +103,34 @@ def main():
                 print(f"\n[+] Último hash: {hash_id}")
                 print(f"    http://localhost:8080/ipfs/{hash_id}")
             else:
-                print("\n[!] No hay hash publicado aún.")
+                print("\n[!] Aún no hay hash publicado.")
+            input("\nPresiona Enter...")
+        
+        elif option == "8":
+            print("\n[🌐] Rastreando open-slum.org...")
+            candidates = tester.crawl_open_slum()
+            if candidates:
+                print(f"\n[*] Probando {len(candidates)} candidatos...")
+                active = tester.test_multiple(candidates)
+                print(f"\n[+] Dominios activos encontrados: {len(active)}")
+                for url in active:
+                    print(f"    {url}")
+                    add = input(f"\n¿Añadir {url} al sistema de votación? (s/n): ").strip().lower()
+                    if add == 's':
+                        domain = url.replace("https://", "").split('/')[0]
+                        voter.propose(domain, submitted_by="open-slum")
+                        print(f"[+] Añadido: {domain}")
+            else:
+                print("[!] No se encontraron nuevos candidatos.")
             input("\nPresiona Enter...")
         
         elif option == "0":
             print("\n[+] ¡Hasta luego!")
             break
+        
+        else:
+            print("\n[!] Opción no válida.")
+            input("Presiona Enter para continuar...")
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-04-08T18:46:40.300161",
+  "active_auto": [
+    "https://annas-archive.gl/",
+    "https://annas-archive.pk/",
+    "https://annas-archive.gd/",
+    "https://welib.org/"
+  ],
+  "manual_verify": [
+    "z-lib.gl",
+    "go-to-library.sk",
+    "z-lib.gd",
+    "z-library.sk",
+    "1lib.sk"
+  ],
+  "note": "Los dominios 'manual_verify' requieren abrirse en navegador (Cloudflare)"
+}

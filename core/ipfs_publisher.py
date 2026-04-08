@@ -1,81 +1,57 @@
 """
-Módulo para publicar reportes en IPFS.
+Publicación de reportes en IPFS con sincronización
 """
 
 import json
 import subprocess
-import socket
 from datetime import datetime
+from config.settings import DATA_DIR, IPFS_GATEWAY, IPFS_HASH_FILE
 
 class IPFSPublisher:
-    """Gestiona la publicación de reportes en IPFS."""
+    def __init__(self):
+        self.report_file = f"{DATA_DIR}/current_report.json"
     
-    def __init__(self, report_file="annas_report.json", hash_file="ipfs_hash.txt"):
-        self.report_file = report_file
-        self.hash_file = hash_file
-    
-    def is_ipfs_running(self):
-        """Verifica si el demonio de IPFS está corriendo."""
-        try:
-            # Intentar conectar al puerto de la API de IPFS (5001)
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(1)
-            result = sock.connect_ex(('127.0.0.1', 5001))
-            sock.close()
-            return result == 0
-        except:
-            return False
-    
-    def publish(self, active_domains):
-        """Publica los dominios activos en IPFS."""
-        
-        # Verificar que IPFS esté corriendo
-        if not self.is_ipfs_running():
-            print("[!] IPFS no está corriendo.")
-            print("[*] Abre otra terminal y ejecuta: ipfs daemon")
-            print("[*] Luego vuelve a intentarlo.")
-            return None
-        
-        print("[*] IPFS detectado. Publicando...")
-        
-        # Crear el reporte
+    def publish_report(self, active_domains, manual_domains):
+        """
+        Publica un reporte en IPFS y devuelve el hash.
+        El hash cambia SOLO cuando el contenido cambia.
+        """
         report = {
             "timestamp": datetime.now().isoformat(),
-            "active_domains": active_domains,
-            "note": "Generado por Anna's Archive Hub"
+            "active_auto": active_domains,
+            "manual_verify": manual_domains,
+            "note": "Los dominios 'manual_verify' requieren abrirse en navegador (Cloudflare)"
         }
         
         with open(self.report_file, "w") as f:
             json.dump(report, f, indent=2)
         
-        # Publicar en IPFS
-        try:
-            result = subprocess.run(
-                ["ipfs", "add", "-Q", self.report_file],
-                capture_output=True, text=True, timeout=30
-            )
-            if result.returncode == 0:
-                hash_id = result.stdout.strip()
-                
-                # Fijar el hash
-                subprocess.run(["ipfs", "pin", "add", hash_id], capture_output=True)
-                
-                with open(self.hash_file, "w") as f:
-                    f.write(hash_id)
-                
-                print(f"[✔] Publicado en IPFS: {hash_id}")
-                print(f"    Enlace: http://localhost:8080/ipfs/{hash_id}")
-                return hash_id
-            else:
-                print(f"[!] Error al publicar: {result.stderr}")
-        except Exception as e:
-            print(f"[!] Error: {e}")
+        # Calcular hash del contenido
+        result = subprocess.run(
+            ["ipfs", "add", "-Q", self.report_file],
+            capture_output=True, text=True
+        )
+        
+        if result.returncode == 0:
+            hash_id = result.stdout.strip()
+            # Fijar el hash para que no expire
+            subprocess.run(["ipfs", "pin", "add", hash_id], capture_output=True)
+            
+            # Guardar el hash
+            with open(IPFS_HASH_FILE, "w") as f:
+                f.write(hash_id)
+            
+            return hash_id
         return None
     
-    def get_last_hash(self):
-        """Obtiene el último hash publicado."""
+    def get_current_hash(self):
+        """Devuelve el último hash publicado"""
         try:
-            with open(self.hash_file, "r") as f:
+            with open(IPFS_HASH_FILE, "r") as f:
                 return f.read().strip()
         except:
             return None
+    
+    def get_ipfs_url(self, hash_id):
+        """Devuelve la URL del gateway local"""
+        return f"{IPFS_GATEWAY}{hash_id}"

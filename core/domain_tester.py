@@ -1,9 +1,11 @@
 """
 Módulo para probar dominios usando curl_cffi (impersonación de navegador)
+Incluye rastreador de open-slum.org para descubrir nuevos dominios automáticamente.
 """
 
+import re
 from curl_cffi import requests
-from config import TIMEOUT, BROWSER_IMPRESONATION
+from config.settings import TIMEOUT, BROWSER_IMPRESONATION
 
 class DomainTester:
     """
@@ -72,3 +74,69 @@ class DomainTester:
                 self.active_domains.append(url)
         
         return self.active_domains
+    
+    def crawl_open_slum(self):
+        """
+        Visita open-slum.org y extrae todos los dominios candidatos
+        que aparecen en su monitor de salud.
+        
+        Returns:
+            list: Lista de dominios candidatos (sin probar).
+        """
+        urls = [
+            "https://open-slum.org",
+            "https://open-slum.pages.dev"
+        ]
+        
+        candidates = []
+        
+        # Patrones para extraer nombres
+        patterns = [
+            (r"Anna's Archive ([A-Z]{2,3})", "annas-archive.{code}"),
+            (r"Libgen\+([A-Z]{2,3})", "libgen.{code}"),
+            (r"Libgen\+([A-Z]{2,3})", "librarygenesis.{code}"),
+            (r"Z-Library ([A-Z]{2,3})", "z-lib.{code}"),
+            (r"Z-Library ([A-Z]{2,3})", "zlibrary.{code}"),
+            (r'([a-z0-9\-]+\.sk)', None),  # Dominios .sk directos
+            (r'z-lib ([a-z]{2,3})', "z-lib.{code}"),
+            (r'1lib ([a-z]{2,3})', "1lib.{code}")
+        ]
+        
+        for url in urls:
+            print(f"[*] Rastreando: {url}")
+            try:
+                r = requests.get(url, impersonate="chrome120", timeout=15)
+                if r.status_code == 200:
+                    text = r.text
+                    
+                    # Aplicar cada patrón
+                    for pattern, template in patterns:
+                        matches = re.findall(pattern, text)
+                        for match in matches:
+                            if template:
+                                # Construir dominio a partir de la plantilla
+                                domain = template.format(code=match.lower())
+                                candidates.append(domain)
+                            else:
+                                # Dominio directo
+                                candidates.append(match.lower())
+                    
+                    # Extracción adicional: buscar cualquier dominio .gl, .gd, .pk, .vg
+                    # que pueda estar suelto en el texto
+                    tld_pattern = r'[a-z0-9\-]+\.(gl|gd|pk|vg|sk|la|bz)'
+                    tld_matches = re.findall(tld_pattern, text, re.IGNORECASE)
+                    for match in tld_matches:
+                        candidates.append(match)
+                    
+            except Exception as e:
+                print(f"  [!] Error: {e}")
+        
+        # Limpiar y eliminar duplicados
+        candidates = list(set([c.lower().strip() for c in candidates if c and len(c) > 5]))
+        print(f"[+] Candidatos encontrados: {len(candidates)}")
+        
+        # Mostrar los primeros 10 como ejemplo
+        if candidates:
+            print(f"[*] Muestra: {candidates[:10]}")
+        
+        return candidates

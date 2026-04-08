@@ -5,7 +5,7 @@ Módulo para la votación colaborativa de dominios.
 import json
 import os
 from datetime import datetime
-from config import DOMAINS_FILE, VOTES_FILE, VOTE_THRESHOLD
+from config.settings import DOMAINS_FILE, VOTES_FILE, VOTE_THRESHOLD
 
 class Voter:
     """

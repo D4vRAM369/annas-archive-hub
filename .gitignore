@@ -1,1 +1,13 @@
 venv/
+
+# Logs
+logs/
+*.log
+
+# Archivos temporales
+*.tmp
+*.bak
+
+# Base de datos local (opcional, decide si quieres trackearla)
+# data/domains.json
+# data/votes.json
