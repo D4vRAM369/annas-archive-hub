@@ -49,8 +49,10 @@ def _crawl_reddit() -> list[str]:
 
                 time.sleep(1)  # respetar rate limit de Reddit
 
+            except (ValueError, KeyError) as e:
+                print(f"  [!] Reddit {subreddit}/{query} - respuesta malformada: {e}")
             except Exception as e:
-                print(f"  [!] Reddit {subreddit}/{query}: {e}")
+                print(f"  [!] Reddit {subreddit}/{query} - error de red: {type(e).__name__}: {str(e)[:80]}")
 
     print(f"  [Reddit] {len(candidates)} candidatos crudos")
     return candidates
@@ -71,6 +73,6 @@ class SocialCrawler:
         print("[*] Rastreando Reddit...")
         all_candidates.extend(_crawl_reddit())
 
-        unique = list(set(c.lower() for c in all_candidates if c))
+        unique = list(dict.fromkeys(c.lower() for c in all_candidates if c))
         print(f"[+] Total candidatos sociales únicos: {len(unique)}")
         return unique
