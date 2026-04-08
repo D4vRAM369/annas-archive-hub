@@ -100,6 +100,54 @@ def _crawl_nitter() -> list[str]:
     return candidates
 
 
+def _is_telegram_spam(text: str) -> bool:
+    """Descarta mensajes de Telegram que contienen indicadores de spam."""
+    text_lower = text.lower()
+    return any(kw in text_lower for kw in TELEGRAM_SPAM_KEYWORDS)
+
+
+def _crawl_telegram() -> list[str]:
+    """
+    Rastrea canales públicos de Telegram vía t.me/s/{canal}.
+    Solo funciona con canales públicos.
+    TELEGRAM_CHANNELS está vacío por defecto — añade canales verificados manualmente.
+    """
+    if not TELEGRAM_CHANNELS:
+        print("  [Telegram] Sin canales configurados (vacío por defecto).")
+        return []
+
+    candidates = []
+
+    for channel in TELEGRAM_CHANNELS:
+        url = f"https://t.me/s/{channel}"
+        try:
+            r = requests.get(
+                url,
+                impersonate=BROWSER_IMPERSONATION,
+                timeout=12,
+            )
+            if r.status_code != 200:
+                print(f"  [!] Telegram @{channel}: HTTP {r.status_code}")
+                continue
+
+            messages = re.findall(
+                r'class="tgme_widget_message_text[^"]*"[^>]*>(.*?)</div>',
+                r.text,
+                re.DOTALL
+            )
+            for raw in messages:
+                clean = re.sub(r'<[^>]+>', ' ', raw)
+                if _is_telegram_spam(clean):
+                    continue
+                candidates.extend(extract_domains(clean))
+
+        except Exception as e:
+            print(f"  [!] Telegram @{channel}: {type(e).__name__}: {str(e)[:80]}")
+
+    print(f"  [Telegram] {len(candidates)} candidatos crudos")
+    return candidates
+
+
 class SocialCrawler:
     """Orquesta todas las fuentes sociales."""
 
@@ -117,6 +165,9 @@ class SocialCrawler:
 
         print("[*] Rastreando X/Twitter (Nitter)...")
         all_candidates.extend(_crawl_nitter())
+
+        print("[*] Rastreando Telegram...")
+        all_candidates.extend(_crawl_telegram())
 
         unique = list(dict.fromkeys(c.lower() for c in all_candidates if c))
         print(f"[+] Total candidatos sociales únicos: {len(unique)}")
