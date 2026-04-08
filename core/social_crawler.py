@@ -9,6 +9,7 @@ Fuentes implementadas:
   - Mastodon (API pública)
 """
 
+import re
 import time
 from curl_cffi import requests
 
@@ -58,6 +59,47 @@ def _crawl_reddit() -> list[str]:
     return candidates
 
 
+def _crawl_nitter() -> list[str]:
+    """
+    Busca en X/Twitter usando instancias públicas de Nitter.
+    Prueba cada instancia en orden y usa la primera que responde.
+    Si todas fallan, devuelve lista vacía sin error fatal.
+    """
+    candidates = []
+
+    for query in NITTER_QUERIES:
+        query_encoded = query.replace(" ", "+")
+        for instance in NITTER_INSTANCES:
+            url = f"{instance}/search?q={query_encoded}&f=tweets"
+            try:
+                r = requests.get(
+                    url,
+                    impersonate=BROWSER_IMPERSONATION,
+                    timeout=12,
+                    allow_redirects=True,
+                )
+                if r.status_code != 200:
+                    continue
+
+                tweet_texts = re.findall(
+                    r'class="tweet-content[^"]*"[^>]*>(.*?)</div>',
+                    r.text,
+                    re.DOTALL
+                )
+                for raw in tweet_texts:
+                    clean = re.sub(r'<[^>]+>', ' ', raw)
+                    candidates.extend(extract_domains(clean))
+
+                break  # instancia funcionó, pasar a siguiente query
+
+            except Exception as e:
+                print(f"  [!] Nitter {instance}: {type(e).__name__}: {str(e)[:80]}")
+                continue
+
+    print(f"  [Nitter/X] {len(candidates)} candidatos crudos")
+    return candidates
+
+
 class SocialCrawler:
     """Orquesta todas las fuentes sociales."""
 
@@ -72,6 +114,9 @@ class SocialCrawler:
 
         print("[*] Rastreando Reddit...")
         all_candidates.extend(_crawl_reddit())
+
+        print("[*] Rastreando X/Twitter (Nitter)...")
+        all_candidates.extend(_crawl_nitter())
 
         unique = list(dict.fromkeys(c.lower() for c in all_candidates if c))
         print(f"[+] Total candidatos sociales únicos: {len(unique)}")
