@@ -4,11 +4,11 @@ Anna's Archive Hub - Punto de entrada principal
 """
 
 import os
-from config import STATIC_DOMAINS
+from config.settings import AUTO_VERIFIABLE as STATIC_DOMAINS, MANUAL_VERIFY
 from core.domain_tester import DomainTester
 from core.voter import Voter
 from core.ipfs_publisher import IPFSPublisher
-from core.open_slum_parser import extract_domains_from_html, test_domain
+from core.social_crawler import SocialCrawler
 
 def clear_screen():
     os.system('clear' if os.name == 'posix' else 'cls')
@@ -37,6 +37,7 @@ def main():
         print("  6. Publicar reporte en IPFS")
         print("  7. Mostrar último hash IPFS")
         print("  8. 🌐 Rastrear open-slum y buscar nuevos dominios")
+        print("  9. 🔍 Rastrear fuentes sociales (Reddit, X, Telegram, Mastodon)")
         print("  0. Salir")
         print("-" * 50)
         
@@ -94,16 +95,21 @@ def main():
         elif option == "6":
             print("\n[*] Publicando en IPFS...")
             active = tester.test_multiple(STATIC_DOMAINS + voter.get_verified())
-            publisher.publish(active)
+            publisher.publish_report(active, MANUAL_VERIFY)
             input("\nPresiona Enter...")
         
         elif option == "7":
-            hash_id = publisher.get_last_hash()
+            hash_id = publisher.get_current_hash()
             if hash_id:
-                print(f"\n[+] Último hash: {hash_id}")
-                print(f"    http://localhost:8080/ipfs/{hash_id}")
+                print(f"\n[+] CID: {hash_id}")
+                print("\n[+] Acceso público (no necesitan daemon):")
+                for url in publisher.get_public_urls(hash_id):
+                    print(f"    {url}")
+                print("\n[+] Acceso local (necesita daemon corriendo):")
+                print(f"    {publisher.get_ipfs_url(hash_id)}")
             else:
                 print("\n[!] Aún no hay hash publicado.")
+                print("    Usa la opción 6 para publicar.")
             input("\nPresiona Enter...")
         
         elif option == "8":
@@ -118,12 +124,31 @@ def main():
                     add = input(f"\n¿Añadir {url} al sistema de votación? (s/n): ").strip().lower()
                     if add == 's':
                         domain = url.replace("https://", "").split('/')[0]
-                        voter.propose(domain, submitted_by="open-slum")
+                        voter.propose(domain, proposed_by="open-slum")
                         print(f"[+] Añadido: {domain}")
             else:
                 print("[!] No se encontraron nuevos candidatos.")
             input("\nPresiona Enter...")
         
+        elif option == "9":
+            print("\n[🔍] Rastreando fuentes sociales...")
+            sc = SocialCrawler()
+            candidates = sc.crawl_all()
+            if candidates:
+                print(f"\n[*] Probando {len(candidates)} candidatos...")
+                active = tester.test_multiple(candidates)
+                print(f"\n[+] Dominios activos encontrados: {len(active)}")
+                for url in active:
+                    print(f"    {url}")
+                    add = input(f"\n¿Añadir {url} al sistema de votación? (s/n): ").strip().lower()
+                    if add == 's':
+                        domain = url.replace("https://", "").split('/')[0]
+                        voter.propose(domain, proposed_by="social-crawler")
+                        print(f"[+] Propuesto: {domain}")
+            else:
+                print("[!] No se encontraron candidatos en fuentes sociales.")
+            input("\nPresiona Enter...")
+
         elif option == "0":
             print("\n[+] ¡Hasta luego!")
             break
