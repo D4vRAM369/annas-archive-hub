@@ -148,6 +148,37 @@ def _crawl_telegram() -> list[str]:
     return candidates
 
 
+def _crawl_mastodon() -> list[str]:
+    """
+    Busca en instancias de Mastodon usando su API pública de búsqueda.
+    No requiere autenticación para búsquedas públicas básicas.
+    """
+    candidates = []
+
+    for instance in MASTODON_INSTANCES:
+        for query in MASTODON_QUERIES:
+            url = f"{instance}/api/v2/search"
+            params = {"q": query, "type": "statuses", "limit": 40}
+            try:
+                r = requests.get(url, params=params, timeout=10)
+                if r.status_code != 200:
+                    continue
+
+                statuses = r.json().get("statuses", [])
+                for status in statuses:
+                    raw = status.get("content", "")
+                    clean = re.sub(r'<[^>]+>', ' ', raw)
+                    candidates.extend(extract_domains(clean))
+
+            except (ValueError, KeyError) as e:
+                print(f"  [!] Mastodon {instance} - respuesta malformada: {e}")
+            except Exception as e:
+                print(f"  [!] Mastodon {instance}: {type(e).__name__}: {str(e)[:80]}")
+
+    print(f"  [Mastodon] {len(candidates)} candidatos crudos")
+    return candidates
+
+
 class SocialCrawler:
     """Orquesta todas las fuentes sociales."""
 
@@ -168,6 +199,9 @@ class SocialCrawler:
 
         print("[*] Rastreando Telegram...")
         all_candidates.extend(_crawl_telegram())
+
+        print("[*] Rastreando Mastodon...")
+        all_candidates.extend(_crawl_mastodon())
 
         unique = list(dict.fromkeys(c.lower() for c in all_candidates if c))
         print(f"[+] Total candidatos sociales únicos: {len(unique)}")
