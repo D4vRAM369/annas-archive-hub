@@ -65,53 +65,95 @@ Mastodon      ──┘
 
 ## 🛠️ Instalación
 
+**Requisitos:** Python 3.12+, Git
+
 ```bash
-git clone https://github.com/D4vRAM369/annas-archive-hub
-cd anna-archive-hub
-python -m venv venv && source venv/bin/activate  # Windows: venv\Scripts\activate
+git clone https://github.com/annas-archive-hub/annas-archive-hub
+cd annas-archive-hub
+
+# Crear y activar entorno virtual
+python -m venv venv
+source venv/bin/activate        # Linux / macOS
+# venv\Scripts\activate         # Windows
+
 pip install -r requirements.txt
-cp .env.example .env   # añade tus claves de Pinata (opcional pero recomendado)
+cp .env.example .env            # opcional — ver Configuración
 ```
 
-### Ejecutar
+---
+
+## 🖥️ Uso
+
+Hay dos formas de usar la herramienta:
+
+### Opción A — Menú interactivo (`main.py`)
+
+Para control manual. Lánzalo, elige una opción, ve los resultados en pantalla.
 
 ```bash
-python main.py    # menú interactivo (9 opciones)
-python run.py     # pipeline automático completo
+python main.py
 ```
 
-| Opción | Función |
-|--------|---------|
-| 1 | Probar dominios conocidos |
-| 2 | Probar todos los dominios |
-| 3 | Añadir dominio manualmente |
-| 4 | Votar por un dominio |
-| 5 | Ver dominios pendientes |
-| 6 | Publicar reporte en IPFS |
-| 7 | Ver CID y URLs públicas |
-| 8 | Rastrear open-slum.org |
-| 9 | Rastrear fuentes sociales |
+```
+╔════════════════════════════════════════════════════════════════════════════╗
+║                        ANNA'S ARCHIVES HUB                                ║
+║             Self-updating domain tracker + IPFS immortality                ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+  1. Probar dominios estáticos       → comprueba la lista de dominios fijos
+  2. Probar todos los dominios       → estáticos + dominios votados
+  3. Añadir dominio manualmente      → proponer un nuevo dominio
+  4. Votar por un dominio            → dar un voto a un dominio candidato
+  5. Ver dominios pendientes         → candidatos esperando votos
+  6. Publicar reporte en IPFS        → pinnear en Pinata / nodo local
+  7. Mostrar último hash IPFS        → CID actual + URLs públicas
+  8. Rastrear open-slum.org          → descubrir dominios nuevos
+  9. Rastrear fuentes sociales       → Reddit, X/Twitter, Telegram, Mastodon
+  0. Salir
+```
+
+### Opción B — Pipeline automático (`run.py`)
+
+Ejecuta todo en secuencia sin intervención: rastrear → verificar → publicar → log.
+Diseñado para cron. No requiere interacción.
+
+```bash
+python run.py
+```
+
+```
+[1/5] Rastreando open-slum.org...    → encuentra dominios candidatos
+[2/5] Rastreando fuentes sociales... → Reddit, X, Telegram, Mastodon
+[3/5] Probando N dominios...         → verifica cuáles están activos
+[4/5] Publicando en IPFS...          → pinnea el reporte, muestra CID
+[5/5] Guardando log...               → añade línea a logs/update.log
+✅ Ejecución completada
+```
 
 ### Automatizar con cron (cada 6 horas)
 
 ```bash
 crontab -e
-# Añadir:
-0 */6 * * * cd /ruta/al/proyecto && source venv/bin/activate && python run.py >> logs/cron.log 2>&1
+```
+
+Añade esta línea (reemplaza la ruta con la ubicación real del proyecto):
+
+```
+0 */6 * * * cd /home/tuusuario/annas-archive-hub && source venv/bin/activate && python run.py >> logs/cron.log 2>&1
 ```
 
 ---
 
 ## ⚙️ Configuración
 
-Copia `.env.example` a `.env` y añade tus credenciales de [Pinata](https://pinata.cloud) para publicación IPFS permanente (plan gratuito: 1GB):
+Copia `.env.example` a `.env` y añade tus credenciales de [Pinata](https://pinata.cloud) para publicación IPFS permanente (plan gratuito: 1 GB):
 
 ```env
 PINATA_API_KEY=tu_key_aqui
 PINATA_API_SECRET=tu_secret_aqui
 ```
 
-Sin Pinata, los reportes se publican en tu nodo IPFS local (requiere daemon corriendo).
+**Sin Pinata:** los reportes se publican en tu nodo IPFS local (requiere el daemon corriendo). La herramienta funciona sin credenciales — la publicación en IPFS es opcional.
 
 ---
 

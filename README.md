@@ -63,43 +63,97 @@ Mastodon      ──┘
 
 ---
 
-## 🛠️ Quick Start
+## 🛠️ Installation
+
+**Requirements:** Python 3.12+, Git
 
 ```bash
-git clone https://github.com/D4vRAM369/annas-archive-hub
-cd anna-archive-hub
-python -m venv venv && source venv/bin/activate  # Windows: venv\Scripts\activate
+git clone https://github.com/annas-archive-hub/annas-archive-hub
+cd annas-archive-hub
+
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate        # Linux / macOS
+# venv\Scripts\activate         # Windows
+
 pip install -r requirements.txt
-cp .env.example .env   # add your Pinata keys (optional but recommended)
+cp .env.example .env            # optional — see Configuration below
 ```
 
-### Run
+---
+
+## 🖥️ Usage
+
+There are two ways to use this tool:
+
+### Option A — Interactive menu (`main.py`)
+
+For manual control. Run it, pick an option, see results on screen.
 
 ```bash
-python main.py    # interactive menu
-python run.py     # full automated pipeline
+python main.py
+```
+
+```
+╔════════════════════════════════════════════════════════════════════════════╗
+║                        ANNA'S ARCHIVES HUB                                ║
+║             Self-updating domain tracker + IPFS immortality                ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+  1. Test static domains          → checks the hardcoded domain list
+  2. Test all domains             → static + community-voted domains
+  3. Add a domain manually        → propose a new domain for testing
+  4. Vote for a domain            → upvote a candidate domain
+  5. View pending domains         → domains waiting for votes
+  6. Publish report to IPFS       → pin results to Pinata / local node
+  7. Show latest IPFS hash        → display current CID + public URLs
+  8. Crawl open-slum.org          → discover new domains from open-slum
+  9. Crawl social sources         → Reddit, X/Twitter, Telegram, Mastodon
+  0. Exit
+```
+
+### Option B — Automated pipeline (`run.py`)
+
+Runs everything unattended in sequence: crawl → verify → publish → log.
+Designed for cron. No interaction needed.
+
+```bash
+python run.py
+```
+
+```
+[1/5] Crawling open-slum.org...     → finds candidate domains
+[2/5] Crawling social sources...    → Reddit, X, Telegram, Mastodon
+[3/5] Testing N domains...          → verifies each one is alive
+[4/5] Publishing to IPFS...         → pins report, prints CID
+[5/5] Saving log...                 → appends to logs/update.log
+✅ Done
 ```
 
 ### Automate with cron (every 6 hours)
 
 ```bash
 crontab -e
-# Add:
-0 */6 * * * cd /path/to/anna-archive-hub && source venv/bin/activate && python run.py >> logs/cron.log 2>&1
+```
+
+Add this line (replace the path with your actual clone location):
+
+```
+0 */6 * * * cd /home/youruser/annas-archive-hub && source venv/bin/activate && python run.py >> logs/cron.log 2>&1
 ```
 
 ---
 
 ## ⚙️ Configuration
 
-Copy `.env.example` to `.env` and fill in your [Pinata](https://pinata.cloud) credentials for permanent IPFS pinning (free plan: 1GB):
+Copy `.env.example` to `.env` and fill in your [Pinata](https://pinata.cloud) credentials for permanent IPFS pinning (free plan: 1 GB):
 
 ```env
 PINATA_API_KEY=your_key_here
 PINATA_API_SECRET=your_secret_here
 ```
 
-Without Pinata, reports are published to your local IPFS node (requires daemon running).
+**Without Pinata:** reports publish to your local IPFS node (requires the IPFS daemon running). The tool works without any credentials — IPFS publishing is optional.
 
 ---
 

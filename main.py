@@ -31,19 +31,19 @@ def main():
     while True:
         clear_screen()
         print_header()
-        print("\n  1. Probar dominios estáticos")
-        print("  2. Probar todos los dominios (estáticos + verificados)")
-        print("  3. Añadir un dominio manualmente")
-        print("  4. Votar por un dominio")
-        print("  5. Ver dominios pendientes")
-        print("  6. Publicar reporte en IPFS")
-        print("  7. Mostrar último hash IPFS")
-        print("  8. 🌐 Rastrear open-slum y buscar nuevos dominios")
-        print("  9. 🔍 Rastrear fuentes sociales (Reddit, X, Telegram, Mastodon)")
-        print("  0. Salir")
+        print("\n  1. Test static domains          / Probar dominios estáticos")
+        print("  2. Test all domains             / Probar todos los dominios")
+        print("  3. Add domain manually          / Añadir un dominio manualmente")
+        print("  4. Vote for a domain            / Votar por un dominio")
+        print("  5. View pending domains         / Ver dominios pendientes")
+        print("  6. Publish report to IPFS       / Publicar reporte en IPFS")
+        print("  7. Show latest IPFS hash        / Mostrar último hash IPFS")
+        print("  8. 🌐 Crawl open-slum.org       / Rastrear open-slum")
+        print("  9. 🔍 Crawl social sources      / Rastrear fuentes sociales")
+        print("  0. Exit / Salir")
         print("-" * 50)
-        
-        option = input("Elige una opción: ").strip()
+
+        option = input("Option / Opción: ").strip()
         
         if option == "1":
             print("\n[*] Probando dominios estáticos...")
@@ -51,57 +51,57 @@ def main():
             print(f"\n[+] Activos: {len(active)}")
             for url in active:
                 print(f"    {url}")
-            input("\nPresiona Enter...")
+            input("\nPress Enter / Presiona Enter...")
         
         elif option == "2":
             all_domains = STATIC_DOMAINS + voter.get_verified()
             print(f"\n[*] Probando {len(all_domains)} dominios...")
             active = tester.test_multiple(all_domains)
             print(f"\n[+] Activos: {len(active)}")
-            input("\nPresiona Enter...")
+            input("\nPress Enter / Presiona Enter...")
         
         elif option == "3":
-            domain = input("\nDominio (ej: annas-archive.xyz): ").strip()
+            domain = input("\nDomain / Dominio (e.g. annas-archive.xyz): ").strip()
             if not domain or '.' not in domain or len(domain) > 253:
-                print("  [!] Dominio no válido.")
-                input("\nPresiona Enter...")
+                print("  [!] Invalid domain / Dominio no válido.")
+                input("\nPress Enter / Presiona Enter...")
                 continue
             voter.propose(domain)
-            input("\nPresiona Enter...")
+            input("\nPress Enter / Presiona Enter...")
         
         elif option == "4":
             pending = voter.get_pending()
             if not pending:
-                print("\n[!] No hay dominios pendientes.")
+                print("\n[!] No pending domains / No hay dominios pendientes.")
             else:
-                print("\nDominios pendientes:")
+                print("\nPending domains / Dominios pendientes:")
                 for i, d in enumerate(pending):
                     votes = voter.domains.get(d, {}).get("votes", 0)
                     print(f"  {i+1}. {d} (votos: {votes})")
                 try:
-                    idx = int(input("\nElige número para votar: ")) - 1
+                    idx = int(input("\nChoose number / Elige número: ")) - 1
                     if 0 <= idx < len(pending):
                         voter.vote(pending[idx])
                 except (ValueError, IndexError):
-                    print("  [!] Entrada no válida.")
-            input("\nPresiona Enter...")
+                    print("  [!] Invalid input / Entrada no válida.")
+            input("\nPress Enter / Presiona Enter...")
         
         elif option == "5":
             pending = voter.get_pending()
             if pending:
-                print("\nDominios pendientes:")
+                print("\nPending domains / Dominios pendientes:")
                 for d in pending:
                     votes = voter.domains.get(d, {}).get("votes", 0)
                     print(f"  • {d} (votos: {votes})")
             else:
-                print("\n[!] No hay dominios pendientes.")
-            input("\nPresiona Enter...")
+                print("\n[!] No pending domains / No hay dominios pendientes.")
+            input("\nPress Enter / Presiona Enter...")
         
         elif option == "6":
             print("\n[*] Publicando en IPFS...")
             active = tester.test_multiple(STATIC_DOMAINS + voter.get_verified())
             publisher.publish_report(active, MANUAL_VERIFY)
-            input("\nPresiona Enter...")
+            input("\nPress Enter / Presiona Enter...")
         
         elif option == "7":
             hash_id = publisher.get_current_hash()
@@ -115,7 +115,7 @@ def main():
             else:
                 print("\n[!] Aún no hay hash publicado.")
                 print("    Usa la opción 6 para publicar.")
-            input("\nPresiona Enter...")
+            input("\nPress Enter / Presiona Enter...")
         
         elif option == "8":
             print("\n[🌐] Rastreando open-slum.org...")
@@ -126,14 +126,14 @@ def main():
                 print(f"\n[+] Dominios activos encontrados: {len(active)}")
                 for url in active:
                     print(f"    {url}")
-                    add = input(f"\n¿Añadir {url} al sistema de votación? (s/n): ").strip().lower()
-                    if add == 's':
+                    add = input(f"\nAdd {url} to watchlist? / ¿Añadir al sistema? (y/s / n):").strip().lower()
+                    if add in ('s', 'y'):
                         domain = url.replace("https://", "").split('/')[0]
                         voter.propose(domain, proposed_by="open-slum")
                         print(f"[+] Añadido: {domain}")
             else:
                 print("[!] No se encontraron nuevos candidatos.")
-            input("\nPresiona Enter...")
+            input("\nPress Enter / Presiona Enter...")
         
         elif option == "9":
             print("\n[🔍] Rastreando fuentes sociales...")
@@ -145,22 +145,22 @@ def main():
                 print(f"\n[+] Dominios activos encontrados: {len(active)}")
                 for url in active:
                     print(f"    {url}")
-                    add = input(f"\n¿Añadir {url} al sistema de votación? (s/n): ").strip().lower()
-                    if add == 's':
+                    add = input(f"\nAdd {url} to watchlist? / ¿Añadir al sistema? (y/s / n):").strip().lower()
+                    if add in ('s', 'y'):
                         domain = url.replace("https://", "").split('/')[0]
                         voter.propose(domain, proposed_by="social-crawler")
                         print(f"[+] Propuesto: {domain}")
             else:
                 print("[!] No se encontraron candidatos en fuentes sociales.")
-            input("\nPresiona Enter...")
+            input("\nPress Enter / Presiona Enter...")
 
         elif option == "0":
-            print("\n[+] ¡Hasta luego!")
+            print("\n[+] Goodbye / ¡Hasta luego!")
             break
-        
+
         else:
-            print("\n[!] Opción no válida.")
-            input("Presiona Enter para continuar...")
+            print("\n[!] Invalid option / Opción no válida.")
+            input("Press Enter to continue / Presiona Enter para continuar...")
 
 if __name__ == "__main__":
     main()
