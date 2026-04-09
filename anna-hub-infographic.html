@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anna's Archive Hub — Cómo funciona</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #1c2128;
+    --border: #30363d;
+    --green: #3fb950;
+    --green-dim: #1a4a25;
+    --amber: #d29922;
+    --amber-dim: #3d2e0a;
+    --blue: #58a6ff;
+    --blue-dim: #0d2149;
+    --red: #f85149;
+    --red-dim: #3b1219;
+    --purple: #bc8cff;
+    --text: #e6edf3;
+    --text-dim: #8b949e;
+    --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 32px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 24px;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+  }
+  .site-header .logo {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    line-height: 1.2;
+    white-space: pre;
+  }
+  .site-header .titles { flex: 1; }
+  .site-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text);
+  }
+  .site-header .subtitle {
+    color: var(--text-dim);
+    font-size: 13px;
+    font-family: var(--mono);
+  }
+
+  /* ── Section titles ── */
+  .section-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    border-left: 3px solid var(--green);
+    padding-left: 10px;
+    margin-bottom: 20px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .card-body { color: var(--text-dim); font-size: 13px; }
+
+  /* ── PIPELINE DIAGRAM ── */
+  .pipeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-bottom: 48px;
+    position: relative;
+  }
+  .pipeline-step {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-right: none;
+    padding: 20px 16px;
+    position: relative;
+  }
+  .pipeline-step:last-child { border-right: 1px solid var(--border); }
+  .pipeline-step::after {
+    content: '▶';
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 16px;
+    z-index: 2;
+    background: var(--bg);
+    padding: 2px 0;
+  }
+  .pipeline-step:last-child::after { display: none; }
+  .step-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .step-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .step-title {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  .step-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .step-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 6px;
+    margin-top: 8px;
+  }
+  .tag-green { background: var(--green-dim); color: var(--green); }
+  .tag-amber { background: var(--amber-dim); color: var(--amber); }
+  .tag-blue  { background: var(--blue-dim);  color: var(--blue);  }
+  .tag-red   { background: var(--red-dim);   color: var(--red);   }
+
+  /* ── FLOW GRAPH ── */
+  .graph-container {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 32px;
+    margin-bottom: 48px;
+    position: relative;
+    overflow-x: auto;
+  }
+  .graph-svg { width: 100%; min-width: 700px; height: 480px; }
+
+  /* ── ROTATION TABLE ── */
+  .rotation-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .rotation-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 20px;
+  }
+  .rotation-card h3 {
+    font-family: var(--mono);
+    font-size: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .domain-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .domain-row:last-child { border-bottom: none; }
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .dot-amber { background: var(--amber); }
+  .dot-red   { background: var(--red); opacity: 0.6; }
+  .domain-name { flex: 1; }
+  .domain-status { color: var(--text-dim); font-size: 10px; }
+
+  /* ── IPFS SECTION ── */
+  .ipfs-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .ipfs-explain {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 20px;
+  }
+  .ipfs-hash {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 20px;
+    font-family: var(--mono);
+  }
+  .hash-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .hash-value {
+    font-size: 11px;
+    color: var(--green);
+    word-break: break-all;
+    line-height: 1.6;
+  }
+  .ipfs-prop {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    align-items: flex-start;
+  }
+  .ipfs-prop .prop-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+  .ipfs-prop .prop-text h4 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .ipfs-prop .prop-text p { font-size: 12px; color: var(--text-dim); }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 48px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 0; bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--border) 0, var(--border) 6px,
+      transparent 6px, transparent 12px
+    );
+  }
+  .tl-item {
+    position: relative;
+    margin-bottom: 24px;
+    padding: 14px 16px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 18px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 2px solid;
+  }
+  .tl-item.green::before { border-color: var(--green); background: var(--green); }
+  .tl-item.amber::before { border-color: var(--amber); background: transparent; }
+  .tl-item.red::before   { border-color: var(--red);   background: var(--red); }
+  .tl-item.blue::before  { border-color: var(--blue);  background: var(--blue); }
+  .tl-time {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .tl-title { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+  .tl-desc  { font-size: 12px; color: var(--text-dim); }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--green);
+    padding: 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+    overflow-x: auto;
+  }
+  .code-block .comment { color: var(--text-dim); }
+  .code-block .kw { color: var(--purple); }
+  .code-block .fn { color: var(--blue); }
+  .code-block .str { color: var(--green); }
+  .code-block .num { color: var(--amber); }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* responsive */
+  @media (max-width: 700px) {
+    .pipeline { grid-template-columns: 1fr 1fr; }
+    .rotation-grid, .ipfs-grid { grid-template-columns: 1fr; }
+    .pipeline-step { border-right: 1px solid var(--border); }
+    .pipeline-step::after { display: none; }
+  }
+
+  /* animated pulse on active dots */
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .dot-green { animation: pulse 2.5s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="site-header">
+  <div class="logo">╔══╗╔╗─╔╗╔╗╔╗╔═══╗
+║══╣║╚╗║║║║║╠══║
+╠══║║╔╗╗║║╚╝║║══╣
+╚══╝╚╝╚═╝╚═══╝╚══╝</div>
+  <div class="titles">
+    <h1>Anna's Archive Hub</h1>
+    <div class="subtitle">// cómo funcionan la rotación de dominios y el auto-descubrimiento</div>
+  </div>
+</header>
+
+<!-- ── 1. PIPELINE OVERVIEW ── -->
+<div class="section-title">01 — pipeline completo</div>
+<div class="pipeline">
+  <div class="pipeline-step">
+    <div class="step-num">PASO 1</div>
+    <span class="step-icon">🕷️</span>
+    <div class="step-title">Rastreo</div>
+    <div class="step-desc">open-slum.org se monitorea automáticamente. Se extraen todos los dominios candidatos de su página.</div>
+    <span class="step-tag tag-amber">open-slum.org</span>
+  </div>
+  <div class="pipeline-step">
+    <div class="step-num">PASO 2</div>
+    <span class="step-icon">🔬</span>
+    <div class="step-title">Verificación</div>
+    <div class="step-desc">Cada dominio se prueba con curl_cffi (impersonando Chrome). Se distingue activo / Cloudflare / caído.</div>
+    <span class="step-tag tag-green">auto + manual</span>
+  </div>
+  <div class="pipeline-step">
+    <div class="step-num">PASO 3</div>
+    <span class="step-icon">🗳️</span>
+    <div class="step-title">Votación</div>
+    <div class="step-desc">La comunidad vota dominios dudosos. Al llegar a 3 votos, el dominio se marca como verificado.</div>
+    <span class="step-tag tag-blue">umbral: 3 votos</span>
+  </div>
+  <div class="pipeline-step">
+    <div class="step-num">PASO 4</div>
+    <span class="step-icon">📡</span>
+    <div class="step-title">IPFS</div>
+    <div class="step-desc">El reporte se publica en IPFS. El hash es inmutable. Funciona sin servidor propio.</div>
+    <span class="step-tag tag-amber">hash permanente</span>
+  </div>
+</div>
+
+<!-- ── 2. FLOW GRAPH ── -->
+<div class="section-title">02 — grafo de flujo: cómo rotan los dominios</div>
+<div class="graph-container">
+  <svg class="graph-svg" viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#30363d"/>
+      </marker>
+      <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#3fb950"/>
+      </marker>
+      <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#f85149"/>
+      </marker>
+      <marker id="arrow-amber" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#d29922"/>
+      </marker>
+    </defs>
+
+    <!-- Nodes: background boxes -->
+    <!-- open-slum -->
+    <rect x="10" y="190" width="130" height="52" fill="#161b22" stroke="#d29922" stroke-width="1.5"/>
+    <text x="75" y="210" text-anchor="middle" fill="#d29922" font-family="monospace" font-size="10" font-weight="bold">OPEN-SLUM.ORG</text>
+    <text x="75" y="226" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">monitor de salud</text>
+    <text x="75" y="238" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">open-slum.pages.dev</text>
+
+    <!-- Crawler -->
+    <rect x="200" y="190" width="120" height="52" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+    <text x="260" y="210" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="10" font-weight="bold">CRAWLER</text>
+    <text x="260" y="226" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">extrae candidatos</text>
+    <text x="260" y="238" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">regex + hrefs</text>
+
+    <!-- DomainTester -->
+    <rect x="375" y="130" width="140" height="52" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+    <text x="445" y="150" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="10" font-weight="bold">DOMAIN TESTER</text>
+    <text x="445" y="166" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">curl_cffi chrome120</text>
+    <text x="445" y="178" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">impersonation</text>
+
+    <!-- ACTIVO -->
+    <rect x="570" y="60" width="110" height="48" fill="#1a4a25" stroke="#3fb950" stroke-width="1.5"/>
+    <text x="625" y="80" text-anchor="middle" fill="#3fb950" font-family="monospace" font-size="10" font-weight="bold">✅ ACTIVO</text>
+    <text x="625" y="96" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">HTTP 2xx/3xx</text>
+    <text x="625" y="108" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">sin Cloudflare</text>
+
+    <!-- CLOUDFLARE -->
+    <rect x="570" y="160" width="110" height="48" fill="#3d2e0a" stroke="#d29922" stroke-width="1.5"/>
+    <text x="625" y="180" text-anchor="middle" fill="#d29922" font-family="monospace" font-size="10" font-weight="bold">⚠️ CLOUDFLARE</text>
+    <text x="625" y="196" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">verificación manual</text>
+    <text x="625" y="208" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">en navegador</text>
+
+    <!-- CAÍDO -->
+    <rect x="570" y="260" width="110" height="48" fill="#3b1219" stroke="#f85149" stroke-width="1.5"/>
+    <text x="625" y="280" text-anchor="middle" fill="#f85149" font-family="monospace" font-size="10" font-weight="bold">❌ CAÍDO</text>
+    <text x="625" y="296" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">timeout / error</text>
+    <text x="625" y="308" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">se descarta</text>
+
+    <!-- Voter -->
+    <rect x="375" y="280" width="140" height="52" fill="#161b22" stroke="#bc8cff" stroke-width="1.5"/>
+    <text x="445" y="300" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="10" font-weight="bold">VOTER</text>
+    <text x="445" y="316" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">propuesta → votación</text>
+    <text x="445" y="328" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">umbral: 3 votos</text>
+
+    <!-- IPFS Publisher -->
+    <rect x="740" y="120" width="140" height="52" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+    <text x="810" y="140" text-anchor="middle" fill="#3fb950" font-family="monospace" font-size="10" font-weight="bold">IPFS PUBLISHER</text>
+    <text x="810" y="156" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">current_report.json</text>
+    <text x="810" y="168" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">hash inmutable</text>
+
+    <!-- Hash distribuido -->
+    <rect x="740" y="230" width="140" height="52" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+    <text x="810" y="250" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="10" font-weight="bold">DISTRIBUICIÓN</text>
+    <text x="810" y="266" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">QR / pendrive</text>
+    <text x="810" y="278" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">GitHub / cron</text>
+
+    <!-- CRON -->
+    <rect x="375" y="400" width="140" height="44" fill="#161b22" stroke="#30363d" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="445" y="420" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="10">⏱ CRON (cada 6h)</text>
+    <text x="445" y="436" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="9">automatización opcional</text>
+
+    <!-- ── EDGES ── -->
+    <!-- open-slum → crawler -->
+    <line x1="140" y1="216" x2="198" y2="216" stroke="#30363d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <!-- crawler → domain tester -->
+    <line x1="320" y1="210" x2="373" y2="175" stroke="#30363d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <!-- domain tester → ACTIVO -->
+    <line x1="515" y1="150" x2="568" y2="95" stroke="#3fb950" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+
+    <!-- domain tester → CLOUDFLARE -->
+    <line x1="515" y1="165" x2="568" y2="184" stroke="#d29922" stroke-width="1.5" marker-end="url(#arrow-amber)"/>
+
+    <!-- domain tester → CAÍDO -->
+    <line x1="515" y1="175" x2="568" y2="275" stroke="#f85149" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-red)"/>
+
+    <!-- crawler → voter (nuevos candidatos propuestos) -->
+    <line x1="320" y1="225" x2="373" y2="295" stroke="#bc8cff" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
+    <text x="338" y="268" fill="#bc8cff" font-family="monospace" font-size="9">propone</text>
+
+    <!-- CLOUDFLARE → voter -->
+    <line x1="625" y1="208" x2="517" y2="285" stroke="#d29922" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
+
+    <!-- voter → domain tester (verificados) -->
+    <path d="M445,280 L445,240 L375,200" stroke="#bc8cff" stroke-width="1" stroke-dasharray="3,2" fill="none" marker-end="url(#arrow)"/>
+    <text x="390" y="255" fill="#bc8cff" font-family="monospace" font-size="9">verificados</text>
+
+    <!-- ACTIVO → IPFS -->
+    <line x1="680" y1="90" x2="738" y2="140" stroke="#3fb950" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+
+    <!-- IPFS → distribución -->
+    <line x1="810" y1="172" x2="810" y2="228" stroke="#30363d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <!-- cron → crawler (loop) -->
+    <path d="M375,422 L200,422 L200,244" stroke="#30363d" stroke-width="1" stroke-dasharray="4,3" fill="none" marker-end="url(#arrow)"/>
+    <text x="215" y="418" fill="#8b949e" font-family="monospace" font-size="9">re-ejecuta</text>
+
+    <!-- Labels en ejes -->
+    <text x="165" y="208" fill="#8b949e" font-family="monospace" font-size="9">extrae</text>
+    <text x="328" y="180" fill="#8b949e" font-family="monospace" font-size="9">prueba</text>
+    <text x="527" y="128" fill="#3fb950" font-family="monospace" font-size="9">200 ok</text>
+    <text x="527" y="172" fill="#d29922" font-family="monospace" font-size="9">503/cf</text>
+    <text x="527" y="230" fill="#f85149" font-family="monospace" font-size="9">timeout</text>
+    <text x="695" y="118" fill="#3fb950" font-family="monospace" font-size="9">publica</text>
+  </svg>
+</div>
+
+<!-- ── 3. ROTACIÓN DE DOMINIOS ── -->
+<div class="section-title">03 — cómo rota un dominio: ciclo de vida</div>
+<div class="timeline">
+  <div class="tl-item blue">
+    <div class="tl-time">FASE 0 — descubrimiento</div>
+    <div class="tl-title">open-slum detecta un nuevo dominio</div>
+    <div class="tl-desc">El monitor de salud de open-slum.org añade el dominio a su lista. El crawler lo detecta en la siguiente ejecución (cada 6h con cron, o manualmente).</div>
+  </div>
+  <div class="tl-item green">
+    <div class="tl-time">FASE 1 — verificación automática</div>
+    <div class="tl-title">DomainTester confirma que responde</div>
+    <div class="tl-desc">curl_cffi impersona Chrome 120 y hace GET al dominio. Si devuelve HTTP 2xx/3xx → se añade directamente al reporte como <code>active_auto</code>.</div>
+  </div>
+  <div class="tl-item amber">
+    <div class="tl-time">FASE 2 — zona gris (Cloudflare)</div>
+    <div class="tl-title">El dominio devuelve 503 o página de verificación</div>
+    <div class="tl-desc">Se mueve a <code>manual_verify</code>. Cualquier usuario puede abrirlo en el navegador y votarlo. Con 3 votos → pasa a verificado.</div>
+  </div>
+  <div class="tl-item green">
+    <div class="tl-time">FASE 3 — activo y publicado</div>
+    <div class="tl-title">El dominio aparece en el reporte IPFS</div>
+    <div class="tl-desc">El reporte <code>current_report.json</code> se sube a IPFS. El hash se guarda en <code>ipfs_hash.txt</code> y se comparte por QR / pendrive / GitHub.</div>
+  </div>
+  <div class="tl-item red">
+    <div class="tl-time">FASE 4 — caída del dominio</div>
+    <div class="tl-title">El dominio deja de responder</div>
+    <div class="tl-desc">En la siguiente ejecución del cron, el tester marca el dominio como inactivo. Se excluye del reporte. El nuevo hash IPFS ya no lo incluye.</div>
+  </div>
+  <div class="tl-item blue">
+    <div class="tl-time">FASE 5 — reemplazo preventivo</div>
+    <div class="tl-title">Nuevos dominios ya están en cola antes de la caída</div>
+    <div class="tl-desc">El crawler ejecuta constantemente. Cuando open-slum añade un nuevo dominio (anticipándose a una caída), el sistema ya lo tiene verificado y en el reporte para el momento en que el anterior falle.</div>
+  </div>
+</div>
+
+<!-- ── 4. ESTADO ACTUAL DE DOMINIOS ── -->
+<div class="section-title">04 — estado actual de dominios</div>
+<div class="rotation-grid">
+  <div class="rotation-card">
+    <h3 style="color: var(--green)">✅ AUTO-VERIFICADOS (activos ahora)</h3>
+    <div class="domain-row">
+      <span class="status-dot dot-green"></span>
+      <span class="domain-name">annas-archive.gl</span>
+      <span class="domain-status">HTTP 200 · auto</span>
+    </div>
+    <div class="domain-row">
+      <span class="status-dot dot-green"></span>
+      <span class="domain-name">annas-archive.pk</span>
+      <span class="domain-status">HTTP 200 · auto</span>
+    </div>
+    <div class="domain-row">
+      <span class="status-dot dot-green"></span>
+      <span class="domain-name">annas-archive.gd</span>
+      <span class="domain-status">HTTP 200 · auto</span>
+    </div>
+    <div class="domain-row">
+      <span class="status-dot dot-green"></span>
+      <span class="domain-name">welib.org</span>
+      <span class="domain-status">HTTP 200 · auto</span>
+    </div>
+  </div>
+  <div class="rotation-card">
+    <h3 style="color: var(--amber)">⚠️ VERIFICACIÓN MANUAL (Cloudflare)</h3>
+    <div class="domain-row">
+      <span class="status-dot dot-amber"></span>
+      <span class="domain-name">z-lib.gl</span>
+      <span class="domain-status">CF · pendiente votos</span>
+    </div>
+    <div class="domain-row">
+      <span class="status-dot dot-amber"></span>
+      <span class="domain-name">go-to-library.sk</span>
+      <span class="domain-status">CF · pendiente votos</span>
+    </div>
+    <div class="domain-row">
+      <span class="status-dot dot-amber"></span>
+      <span class="domain-name">z-lib.gd</span>
+      <span class="domain-status">CF · pendiente votos</span>
+    </div>
+    <div class="domain-row">
+      <span class="status-dot dot-amber"></span>
+      <span class="domain-name">z-library.sk</span>
+      <span class="domain-status">CF · pendiente votos</span>
+    </div>
+    <div class="domain-row">
+      <span class="status-dot dot-amber"></span>
+      <span class="domain-name">1lib.sk</span>
+      <span class="domain-status">CF · pendiente votos</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── 5. IPFS ── -->
+<div class="section-title">05 — por qué IPFS hace el sistema resiliente</div>
+<div class="ipfs-grid">
+  <div class="ipfs-explain">
+    <div class="ipfs-prop">
+      <span class="prop-icon">🔒</span>
+      <div class="prop-text">
+        <h4>Inmutabilidad</h4>
+        <p>El hash identifica el contenido, no una URL. Si el contenido no cambia, el hash no cambia. Nadie puede modificar el reporte sin que el hash cambie.</p>
+      </div>
+    </div>
+    <div class="ipfs-prop">
+      <span class="prop-icon">🌐</span>
+      <div class="prop-text">
+        <h4>Sin servidor propio</h4>
+        <p>Cualquier nodo IPFS de la red puede servir el archivo. No necesitas VPS ni hosting. El sistema funciona aunque tu ordenador esté apagado.</p>
+      </div>
+    </div>
+    <div class="ipfs-prop">
+      <span class="prop-icon">📦</span>
+      <div class="prop-text">
+        <h4>Distribución offline</h4>
+        <p>El QR apunta al hash IPFS. Cualquiera con el QR puede acceder al reporte desde un gateway público (ipfs.io, cloudflare-ipfs.com) sin instalar nada.</p>
+      </div>
+    </div>
+    <div class="ipfs-prop">
+      <span class="prop-icon">🔄</span>
+      <div class="prop-text">
+        <h4>Historial perpetuo</h4>
+        <p>Cada publicación genera un hash diferente. El hash anterior sigue siendo accesible. Puedes comparar qué dominios estaban activos en cada fecha.</p>
+      </div>
+    </div>
+  </div>
+  <div class="ipfs-hash">
+    <div class="hash-label">último hash publicado</div>
+    <div class="hash-value">QmUTHonhMQB7sxby8CZX3srniQ42cetq4MnyZVe6mEA6x6</div>
+    <br>
+    <div class="hash-label">acceso vía gateway</div>
+    <div class="hash-value" style="color: var(--blue)">https://ipfs.io/ipfs/<br>QmUTHon...</div>
+    <br>
+    <div class="hash-label">acceso local</div>
+    <div class="hash-value" style="color: var(--text-dim)">http://localhost:8080<br>/ipfs/QmUTHon...</div>
+  </div>
+</div>
+
+<!-- ── 6. CÓMO EJECUTARLO ── -->
+<div class="section-title">06 — cómo ejecutarlo tú mismo</div>
+<div class="code-block">
+<span class="comment"># Instalar dependencias</span>
+pip install curl_cffi cloudscraper requests qrcode[pil]
+
+<span class="comment"># Modo interactivo (menú completo)</span>
+python main.py
+
+<span class="comment"># Modo automático (ideal para cron)</span>
+python run.py
+
+<span class="comment"># Automatizar con cron (cada 6 horas)</span>
+crontab -e
+<span class="str">0 */6 * * * cd /ruta/al/proyecto &amp;&amp; python run.py >> logs/cron.log 2>&1</span>
+
+<span class="comment"># Ver el último reporte en IPFS (necesita daemon corriendo)</span>
+ipfs cat <span class="str">QmUTHonhMQB7sxby8CZX3srniQ42cetq4MnyZVe6mEA6x6</span>
+
+<span class="comment"># O abrirlo en cualquier gateway público (sin instalar nada)</span>
+<span class="str">https://ipfs.io/ipfs/QmUTHonhMQB7sxby8CZX3srniQ42cetq4MnyZVe6mEA6x6</span>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <span>anna-archive-hub · generado 2026-04-08</span>
+  <span>pipeline: open-slum → curl_cffi → voter → ipfs</span>
+</footer>
+
+</body>
+</html>

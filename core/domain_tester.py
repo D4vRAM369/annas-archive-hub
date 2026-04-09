@@ -5,7 +5,7 @@ Incluye rastreador de open-slum.org para descubrir nuevos dominios automáticame
 
 import re
 from curl_cffi import requests
-from config.settings import TIMEOUT, BROWSER_IMPRESONATION
+from config.settings import TIMEOUT, BROWSER_IMPERSONATION
 
 class DomainTester:
     """
@@ -34,7 +34,7 @@ class DomainTester:
             response = requests.get(
                 url,
                 timeout=TIMEOUT,
-                impersonate=BROWSER_IMPRESONATION,
+                impersonate=BROWSER_IMPERSONATION,
                 allow_redirects=True
             )
             
@@ -67,6 +67,22 @@ class DomainTester:
             list: URLs activas.
         """
         self.active_domains = []
+        
+        # Lista de dominios basura que quremos probar
+        dominios_bloqueados = [
+        "techblazing.com",
+        "google.com",
+        "facebook.com", 
+            "twitter.com",
+            "youtube.com",
+            "reddit.com",
+            "wikipedia.org",
+            "amazon.com",
+            "cloudflare.com",
+            "github.com",
+         "ipfs.io",
+         "dweb.link"
+        ]
         
         for domain in domains:
             url = self.test_domain(domain)
@@ -105,7 +121,7 @@ class DomainTester:
         for url in urls:
             print(f"[*] Rastreando: {url}")
             try:
-                r = requests.get(url, impersonate="chrome120", timeout=15)
+                r = requests.get(url, impersonate=BROWSER_IMPERSONATION, timeout=15)
                 if r.status_code == 200:
                     text = r.text
                     
@@ -123,7 +139,8 @@ class DomainTester:
                     
                     # Extracción adicional: buscar cualquier dominio .gl, .gd, .pk, .vg
                     # que pueda estar suelto en el texto
-                    tld_pattern = r'[a-z0-9\-]+\.(gl|gd|pk|vg|sk|la|bz)'
+                    # Nota: grupo no capturador (?:...) para que findall devuelva el dominio completo
+                    tld_pattern = r'[a-z0-9\-]+\.(?:gl|gd|pk|vg|sk|la|bz)'
                     tld_matches = re.findall(tld_pattern, text, re.IGNORECASE)
                     for match in tld_matches:
                         candidates.append(match)
