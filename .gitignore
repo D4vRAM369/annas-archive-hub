@@ -60,3 +60,6 @@ CODEBASE_ANALYSIS.md
 INDEX.md
 PROJECT_STATUS.md
 QUICK_REFERENCE.md
+
+# Scripts de experimentación (no forman parte del proyecto)
+scripts/

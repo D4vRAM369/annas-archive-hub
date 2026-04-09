@@ -1,1 +1,44 @@
-{}
+{
+  "annas-archive.gl": {
+    "proposed_by": "open-slum",
+    "timestamp": "2026-04-09T03:51:21.793485",
+    "votes": 0,
+    "verified": false
+  },
+  "libgen.vg": {
+    "proposed_by": "open-slum",
+    "timestamp": "2026-04-09T03:52:29.136627",
+    "votes": 0,
+    "verified": false
+  },
+  "libgen.bz": {
+    "proposed_by": "open-slum",
+    "timestamp": "2026-04-09T03:52:46.299295",
+    "votes": 0,
+    "verified": false
+  },
+  "annas-archive.gd": {
+    "proposed_by": "open-slum",
+    "timestamp": "2026-04-09T03:52:56.675430",
+    "votes": 0,
+    "verified": false
+  },
+  "annas-archive.pk": {
+    "proposed_by": "open-slum",
+    "timestamp": "2026-04-09T03:52:59.382738",
+    "votes": 0,
+    "verified": false
+  },
+  "libgen.gl": {
+    "proposed_by": "open-slum",
+    "timestamp": "2026-04-09T03:53:02.302127",
+    "votes": 0,
+    "verified": false
+  },
+  "libgen.la": {
+    "proposed_by": "open-slum",
+    "timestamp": "2026-04-09T03:53:09.983132",
+    "votes": 0,
+    "verified": false
+  }
+}
