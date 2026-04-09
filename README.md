@@ -1,155 +1,136 @@
 # Anna's Archive Hub
 
-Sistema descentralizado para rastrear, verificar y compartir dominios activos de Anna's Archive y otras shadow libraries.
+> 🔥 **Self-updating domain tracker for Anna's Archive and shadow libraries — with real-time verification and permanent IPFS publishing. Never lose access again.**
 
-Los resultados se publican en **IPFS** — inmutables y accesibles sin servidor propio.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![IPFS](https://img.shields.io/badge/IPFS-Published-green.svg)](https://ipfs.io)
+
+[🇪🇸 Versión en español](README.es.md)
 
 ---
 
-## ¿Qué hace?
+## 📡 Latest Report (IPFS — Immutable)
+
+**Current CID:** `QmaftecLqvZUsNccDNwguR6PVh449uDzQMQqpFh97q2J2h`
+
+| Gateway | Link |
+|---------|------|
+| ipfs.io | [Open report](https://ipfs.io/ipfs/QmaftecLqvZUsNccDNwguR6PVh449uDzQMQqpFh97q2J2h) |
+| dweb.link | [Open report](https://dweb.link/ipfs/QmaftecLqvZUsNccDNwguR6PVh449uDzQMQqpFh97q2J2h) |
+| Pinata | [Open report](https://gateway.pinata.cloud/ipfs/QmaftecLqvZUsNccDNwguR6PVh449uDzQMQqpFh97q2J2h) |
+
+> The CID is updated automatically every 6 hours. Older CIDs remain permanently accessible.
+
+---
+
+## ✅ Active Domains (Last Verified)
+
+| Domain | Status |
+|--------|--------|
+| annas-archive.gl | ✅ Active |
+| annas-archive.pk | ✅ Active |
+| annas-archive.gd | ✅ Active |
+| libgen.bz | ✅ Active |
+| libgen.gl | ✅ Active |
+| libgen.la | ✅ Active |
+| libgen.vg | ✅ Active |
+| z-library.bz | ✅ Active |
+| z-library.se | ✅ Active |
+| welib.org | ✅ Active |
+
+> ⚠️ Some domains (z-lib.gl, go-to-library.sk, etc.) require opening in a browser due to Cloudflare protection.
+
+---
+
+## 🚀 How It Works
 
 ```
 open-slum.org ──┐
-                ├──► candidatos ──► verifica HTTP ──► activos ──► IPFS ──► QR/pendrive
-Reddit/X/TG  ───┘
+Reddit / X    ──┼──► candidates ──► HTTP verify ──► active ──► IPFS ──► QR / USB
+Telegram      ──┘
+Mastodon      ──┘
 ```
 
-1. **Rastrea** dominios nuevos desde open-slum.org, Reddit, X (Nitter), Telegram y Mastodon
-2. **Verifica** cuáles responden (impersonando Chrome para evitar bloqueos de Cloudflare)
-3. **Vota** — la comunidad puede proponer y votar dominios dudosos
-4. **Publica** el reporte en IPFS: hash inmutable accesible desde cualquier gateway público
-5. **Automatiza** con cron — sin necesidad de tener el ordenador encendido 24/7
+| Feature | Description |
+|---------|-------------|
+| 🕷️ Multi-source crawler | open-slum.org + Reddit + X/Twitter + Telegram + Mastodon |
+| ✅ Smart verification | curl_cffi with Chrome impersonation to bypass blocks |
+| 🚫 Spam filtering | Blocks fake domains and spam Telegram channels |
+| 📦 IPFS publishing | Immutable report pinned to Pinata — no server needed |
+| 🗳️ Voting system | Community verification for uncertain domains |
+| ⏱️ Auto-scheduled | Runs unattended via cron every 6 hours |
 
 ---
 
-## Instalación
+## 🛠️ Quick Start
 
 ```bash
-git clone https://github.com/tu-usuario/anna-archive-hub
+git clone https://github.com/D4vRAM369/anna-archive-hub
 cd anna-archive-hub
-python -m venv venv && source venv/bin/activate
+python -m venv venv && source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
+cp .env.example .env   # add your Pinata keys (optional but recommended)
 ```
 
-Copia `.env.example` a `.env` y rellena tus credenciales de Pinata (opcional, pero recomendado):
+### Run
 
 ```bash
-cp .env.example .env
-# editar .env con tu editor
+python main.py    # interactive menu
+python run.py     # full automated pipeline
 ```
 
----
-
-## Uso
-
-### Modo interactivo (menú completo)
-
-```bash
-python main.py
-```
-
-| Opción | Función |
-|--------|---------|
-| 1 | Probar dominios estáticos conocidos |
-| 2 | Probar todos (estáticos + verificados por la comunidad) |
-| 3 | Añadir un dominio manualmente |
-| 4 | Votar por un dominio pendiente |
-| 5 | Ver dominios pendientes de verificación |
-| 6 | Publicar reporte en IPFS |
-| 7 | Ver hash IPFS y URLs públicas |
-| 8 | Rastrear open-slum.org |
-| 9 | Rastrear fuentes sociales (Reddit, X, Telegram, Mastodon) |
-
-### Modo automático (para cron)
-
-```bash
-python run.py
-```
-
-### Automatizar con cron (cada 6 horas)
+### Automate with cron (every 6 hours)
 
 ```bash
 crontab -e
-# Añadir:
-0 */6 * * * cd /ruta/al/proyecto && source venv/bin/activate && python run.py >> logs/cron.log 2>&1
+# Add:
+0 */6 * * * cd /path/to/anna-archive-hub && source venv/bin/activate && python run.py >> logs/cron.log 2>&1
 ```
 
 ---
 
-## Publicación en IPFS
+## ⚙️ Configuration
 
-Sin Pinata configurado, el reporte se publica en tu nodo local IPFS (requiere daemon corriendo).
+Copy `.env.example` to `.env` and fill in your [Pinata](https://pinata.cloud) credentials for permanent IPFS pinning (free plan: 1GB):
 
-Con Pinata, el reporte queda accesible permanentemente en la red pública:
-
-```
-https://ipfs.io/ipfs/<CID>
-https://cloudflare-ipfs.com/ipfs/<CID>
-https://dweb.link/ipfs/<CID>
-https://gateway.pinata.cloud/ipfs/<CID>
+```env
+PINATA_API_KEY=your_key_here
+PINATA_API_SECRET=your_secret_here
 ```
 
-Para configurar Pinata:
-1. Crea cuenta gratuita en [pinata.cloud](https://pinata.cloud)
-2. Ve a **Developers → API Keys → New Key** (activa `pinFileToIPFS`)
-3. Añade las claves a `.env`:
-   ```
-   PINATA_API_KEY=tu_key
-   PINATA_API_SECRET=tu_secret
-   ```
+Without Pinata, reports are published to your local IPFS node (requires daemon running).
 
 ---
 
-## Fuentes de descubrimiento
-
-| Fuente | Método | Auth requerida |
-|--------|--------|----------------|
-| open-slum.org | HTML scraping | No |
-| Reddit | JSON API pública | No |
-| X/Twitter | Nitter (instancias públicas) | No |
-| Telegram | t.me/s/ (canales públicos) | No |
-| Mastodon | API pública v2 | No |
-
-> **Nota sobre Telegram:** `TELEGRAM_CHANNELS` está vacío por defecto. Añade solo canales que hayas verificado manualmente — la mayoría de canales con nombres de shadow libraries son spam o impostores.
-
----
-
-## Estructura del proyecto
+## 📁 Project Structure
 
 ```
 anna-archive-hub/
-├── main.py                    # Menú interactivo
-├── run.py                     # Pipeline automático (para cron)
+├── main.py                    # Interactive menu (9 options)
+├── run.py                     # Automated pipeline (for cron)
 ├── config/
-│   └── settings.py            # Configuración central
+│   └── settings.py            # Central configuration
 ├── core/
-│   ├── domain_tester.py       # Verificación de dominios con curl_cffi
-│   ├── domain_extractor.py    # Extracción de dominios de texto libre
-│   ├── open_slum_crawler.py   # Rastreador de open-slum.org
-│   ├── social_crawler.py      # Reddit, X, Telegram, Mastodon
-│   ├── ipfs_publisher.py      # Publicación en IPFS / Pinata
-│   └── voter.py               # Sistema de votación comunitaria
+│   ├── domain_tester.py       # Domain verification with curl_cffi
+│   ├── domain_extractor.py    # Regex domain extraction from free text
+│   ├── open_slum_crawler.py   # open-slum.org crawler
+│   ├── social_crawler.py      # Reddit, X, Telegram, Mastodon sources
+│   ├── ipfs_publisher.py      # IPFS / Pinata publishing
+│   └── voter.py               # Community voting system
 ├── data/
-│   ├── current_report.json    # Último reporte generado
-│   └── ipfs_hash.txt          # Último CID publicado
-├── .env.example               # Plantilla de variables de entorno
+│   ├── current_report.json    # Latest generated report
+│   └── ipfs_hash.txt          # Latest published CID
+├── .env.example               # Credentials template
 └── requirements.txt
 ```
 
 ---
 
-## Por qué IPFS
+## 🤝 Contributing
 
-El CID (Content Identifier) es la huella digital del archivo calculada de su contenido. Es inmutable: el mismo contenido siempre produce el mismo CID, y nadie puede modificarlo sin cambiar el CID. Esto hace el sistema resistente a censura: para eliminarlo habría que tumbar simultáneamente Protocol Labs, Cloudflare y Pinata.
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
----
+## 📄 License
 
-## Contribuir
-
-Lee [CONTRIBUTING.md](CONTRIBUTING.md).
-
----
-
-## Licencia
-
-MIT
+MIT — Free for all. Keep knowledge alive.

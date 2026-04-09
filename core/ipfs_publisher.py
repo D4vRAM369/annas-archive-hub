@@ -8,7 +8,7 @@ Estrategia de publicación (en orden de prioridad):
 
 Para usar Pinata, configura en tu entorno (o en un archivo .env):
   PINATA_API_KEY=<tu_key>
-  PINATA_SECRET_KEY=<tu_secret>
+  PINATA_API_SECRET=<tu_secret>
 """
 
 import json

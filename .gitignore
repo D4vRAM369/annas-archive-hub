@@ -46,6 +46,9 @@ Thumbs.db
 *.jpg
 *.jpeg
 
+# Documentos personales locales
+docs/
+
 # Oh-my-claudecode
 .omc/
 

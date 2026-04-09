@@ -9,17 +9,19 @@ from core.domain_tester import DomainTester
 from core.voter import Voter
 from core.ipfs_publisher import IPFSPublisher
 from core.social_crawler import SocialCrawler
+from core.open_slum_crawler import crawl_open_slum
 
 def clear_screen():
     os.system('clear' if os.name == 'posix' else 'cls')
 
 def print_header():
-    print("=" * 50)
-    print("    ANNA'S ARCHIVE - HUB")
-    print("=" * 50)
-    print("  Rastrea, vota y comparte dominios activos.")
-    print("  Los datos se publican en IPFS para siempre.")
-    print("=" * 50)
+    print("╔════════════════════════════════════════════════════════════════════════════╗")
+    print("║                                                                            ║")
+    print("║                        ANNA'S ARCHIVES HUB                                ║")
+    print("║                                                                            ║")
+    print("║             Self-updating domain tracker + IPFS immortality                ║")
+    print("║                                                                            ║")
+    print("╚════════════════════════════════════════════════════════════════════════════╝")
 
 def main():
     tester = DomainTester()
@@ -77,8 +79,8 @@ def main():
                     idx = int(input("\nElige número para votar: ")) - 1
                     if 0 <= idx < len(pending):
                         voter.vote(pending[idx])
-                except:
-                    pass
+                except (ValueError, IndexError):
+                    print("  [!] Entrada no válida.")
             input("\nPresiona Enter...")
         
         elif option == "5":
@@ -114,7 +116,7 @@ def main():
         
         elif option == "8":
             print("\n[🌐] Rastreando open-slum.org...")
-            candidates = tester.crawl_open_slum()
+            candidates = crawl_open_slum()
             if candidates:
                 print(f"\n[*] Probando {len(candidates)} candidatos...")
                 active = tester.test_multiple(candidates)
