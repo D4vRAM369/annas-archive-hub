@@ -1,5 +1,7 @@
 # Anna's Archive Hub
 
+<img width="680" height="480" alt="Gemini_Generated_Image" src="https://github.com/user-attachments/assets/cfd41e9b-3230-4169-a1e2-b863e4d22e2d" />
+
 > 🔥 **Rastreador de dominios auto-actualizable para Anna's Archive y shadow libraries — con verificación en tiempo real y publicación permanente en IPFS. No pierdas el acceso nunca más.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
