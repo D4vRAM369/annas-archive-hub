@@ -66,7 +66,7 @@ Mastodon      ──┘
 ## 🛠️ Instalación
 
 ```bash
-git clone https://github.com/D4vRAM369/anna-archive-hub
+git clone https://github.com/D4vRAM369/annas-archive-hub
 cd anna-archive-hub
 python -m venv venv && source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt

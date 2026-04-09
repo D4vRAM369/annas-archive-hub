@@ -7,7 +7,7 @@ Gracias por querer contribuir a Anna's Archive Hub.
 ## Cómo empezar
 
 ```bash
-git clone https://github.com/tu-usuario/anna-archive-hub
+git clone https://github.com/annas-archive-hub/anna-archive-hub
 cd anna-archive-hub
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt

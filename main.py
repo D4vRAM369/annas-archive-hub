@@ -62,8 +62,11 @@ def main():
         
         elif option == "3":
             domain = input("\nDominio (ej: annas-archive.xyz): ").strip()
-            if domain:
-                voter.propose(domain)
+            if not domain or '.' not in domain or len(domain) > 253:
+                print("  [!] Dominio no válido.")
+                input("\nPresiona Enter...")
+                continue
+            voter.propose(domain)
             input("\nPresiona Enter...")
         
         elif option == "4":

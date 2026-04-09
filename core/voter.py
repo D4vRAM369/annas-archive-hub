@@ -5,16 +5,15 @@ Módulo para la votación colaborativa de dominios.
 import json
 import os
 from datetime import datetime
-from config.settings import DOMAINS_FILE, VOTES_FILE, VOTE_THRESHOLD
+from config.settings import DOMAINS_FILE, VOTE_THRESHOLD
 
 class Voter:
     """
-    Gestiona las propuestas y votos de la comunidad.
+    Gestiona propuestas y votos locales de dominios candidatos.
     """
-    
+
     def __init__(self):
         self.domains = self._load_json(DOMAINS_FILE)
-        self.votes = self._load_json(VOTES_FILE)
     
     def _load_json(self, filepath):
         """Carga un archivo JSON o devuelve estructura vacía."""

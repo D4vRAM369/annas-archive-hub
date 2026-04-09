@@ -7,6 +7,7 @@ Ideal para ejecutar con cron (ej: cada 6 horas).
 
 import os
 import sys
+from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -21,7 +22,7 @@ def main():
     print("=" * 50)
     print("   ANNA'S ARCHIVE HUB - EJECUCIÓN AUTOMÁTICA")
     print("=" * 50)
-    print(f"Timestamp: {__import__('datetime').datetime.now()}\n")
+    print(f"Timestamp: {datetime.now()}\n")
 
     # 1. Rastrear open-slum
     print("[1/5] Rastreando open-slum...")
@@ -58,7 +59,6 @@ def main():
     print("\n[5/5] Guardando log...")
     os.makedirs("logs", exist_ok=True)
     with open("logs/update.log", "a") as f:
-        from datetime import datetime
         f.write(
             f"{datetime.now()} | cid={hash_id} | activos={len(active)}"
             f" | slum={len(slum_domains)} | social={len(social_domains)}\n"
