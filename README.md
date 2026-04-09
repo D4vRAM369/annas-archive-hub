@@ -1,5 +1,8 @@
 # Anna's Archive Hub
 
+<img width="680" height="480" alt="Gemini_Generated_Image" src="https://github.com/user-attachments/assets/cfd41e9b-3230-4169-a1e2-b863e4d22e2d" />
+
+
 > 🔥 **Self-updating domain tracker for Anna's Archive and shadow libraries — with real-time verification and permanent IPFS publishing. Never lose access again.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
