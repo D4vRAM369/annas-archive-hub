@@ -32,36 +32,42 @@ class DomainTester:
         self.active_domains = []
         self.inactive_domains = []
 
-    def test_domain(self, domain):
+    def test_domain(self, domain, retries=2):
         """
-        Prueba un dominio individual.
+        Prueba un dominio individual con reintentos.
 
         Args:
             domain: El dominio a probar (ej: "annas-archive.gl")
+            retries: Número de reintentos en caso de fallo de red.
 
         Returns:
             str: La URL activa si funciona, None si no.
         """
         url = f"https://{domain}"
 
-        try:
-            # La magia está aquí: impersonate engaña a Cloudflare
-            response = requests.get(
-                url,
-                timeout=TIMEOUT,
-                impersonate=BROWSER_IMPERSONATION,
-                allow_redirects=True
-            )
+        for attempt in range(retries + 1):
+            try:
+                # La magia está aquí: impersonate engaña a Cloudflare
+                response = requests.get(
+                    url,
+                    timeout=TIMEOUT,
+                    impersonate=BROWSER_IMPERSONATION,
+                    allow_redirects=True
+                )
 
-            # Solo 2xx/3xx = dominio usable
-            if response.status_code < 400:
-                print(f"  ✅ {domain} -> {response.status_code} (activo)")
-                return response.url  # Puede ser la URL final tras redirección
-            else:
-                print(f"  ❌ {domain} -> {response.status_code} (inactivo)")
+                # Solo 2xx/3xx = dominio usable
+                if response.status_code < 400:
+                    print(f"  ✅ {domain} -> {response.status_code} (activo)")
+                    return response.url  # Puede ser la URL final tras redirección
+                else:
+                    print(f"  ❌ {domain} -> {response.status_code} (inactivo)")
+                    return None
 
-        except Exception as e:
-            print(f"  ❌ {domain} -> Error: {str(e)[:50]}")
+            except Exception as e:
+                if attempt < retries:
+                    print(f"  [!] {domain} falló (intento {attempt+1}), reintentando...")
+                    continue
+                print(f"  ❌ {domain} -> Error final: {str(e)[:50]}")
 
         return None
 

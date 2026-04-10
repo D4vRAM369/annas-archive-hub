@@ -40,5 +40,23 @@
     "timestamp": "2026-04-09T03:53:09.983132",
     "votes": 0,
     "verified": false
+  },
+  "techblazing.com": {
+    "proposed_by": "auto-crawler",
+    "timestamp": "2026-04-10T16:36:57.419777",
+    "votes": 0,
+    "verified": false
+  },
+  "z-library.bz": {
+    "proposed_by": "auto-crawler",
+    "timestamp": "2026-04-10T16:36:57.420902",
+    "votes": 0,
+    "verified": false
+  },
+  "z-library.se": {
+    "proposed_by": "auto-crawler",
+    "timestamp": "2026-04-10T16:36:57.421249",
+    "votes": 0,
+    "verified": false
   }
 }
