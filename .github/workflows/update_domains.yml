@@ -1,6 +1,8 @@
 name: Update Domains and IPFS
 
 on:
+  push:
+    branches: [ main ]  # Se activa al subir a main
   schedule:
     - cron: '0 */6 * * *'  # Cada 6 horas
   workflow_dispatch:      # Permite ejecución manual desde GitHub
@@ -15,7 +17,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
-        uses: actions/checkout@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
