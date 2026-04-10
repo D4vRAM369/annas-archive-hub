@@ -7,6 +7,11 @@ on:
     - cron: '0 */6 * * *'  # Cada 6 horas
   workflow_dispatch:      # Permite ejecución manual desde GitHub
 
+permissions:
+  contents: write    # Permite al bot hacer push de cambios
+  pages: write       # Opcional, por si usas GitHub Pages
+  id-token: write    # Opcional
+
 jobs:
   update:
     runs-on: ubuntu-latest
