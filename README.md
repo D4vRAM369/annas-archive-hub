@@ -8,6 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![IPFS](https://img.shields.io/badge/IPFS-Published-green.svg)](https://ipfs.io)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/D4vRAM369/annas-archive-hub)
 
 [🇪🇸 Versión en español](README.es.md)
 
