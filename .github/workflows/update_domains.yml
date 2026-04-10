@@ -39,15 +39,15 @@ jobs:
 
       - name: Update GitHub repository homepage
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_PAT: ${{ secrets.MY_PAT }}
         run: |
-          # Lee el nuevo CID generado en el paso anterior (desde el archivo de datos)
           CID=$(cat data/ipfs_hash.txt)
           NEW_URL="https://gateway.pinata.cloud/ipfs/$CID"
-          echo "Actualizando link del repo a: $NEW_URL"
+          echo "Intentando actualizar link a: $NEW_URL"
           
-          curl -X PATCH \
-            -H "Authorization: token $GITHUB_TOKEN" \
+          # Ahora usamos el GH_PAT con permisos de Administration
+          curl --fail -X PATCH \
+            -H "Authorization: token $GH_PAT" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/${{ github.repository }} \
             -d "{\"homepage\":\"$NEW_URL\"}"
