@@ -51,6 +51,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/ README.md README.es.md logs/
+          # Añadimos solo lo necesario: reportes y base de datos
+          git add data/ README.md README.es.md
           git diff --quiet && git diff --staged --quiet || git commit -m "chore: auto-update domains and CID [skip ci]"
           git push

@@ -21,8 +21,8 @@ build/
 logs/
 *.log
 
-# Datos locales (el historial de votos y dominios es local)
-data/domains.json
+# Datos locales (¡IMPORTANTE: Permitir domains.json para que el Action lo actualice!)
+# data/domains.json
 data/votes.json
 
 # Archivos temporales
