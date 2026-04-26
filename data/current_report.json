@@ -1,15 +1,16 @@
 {
-  "timestamp": "2026-04-26T12:19:48.339240",
+  "timestamp": "2026-04-26T18:18:27.278192",
   "active_auto": [
+    "https://libgen.vg/",
+    "https://filter.explorads.com/filter?q=Z-library+Search+EBooks&i=*x6Bfz8HX*s_0&ci=8327510288333801331&t=1071779790&h=39",
     "https://libgen.bz/",
-    "https://annas-archive.gd/",
     "https://libgen.gl/",
     "https://annas-archive.li/",
+    "https://libgen.la/",
     "https://annas-archive.gl/",
     "https://annas-archive.pk/",
-    "https://libgen.vg/",
-    "https://filter.explorads.com/filter?q=Z-library+Search+EBooks&i=ExHUAbJV7y0_0&ci=-7588343424200460653&t=1696479215&h=39",
-    "https://libgen.la/"
+    "https://annas-archive.gd/",
+    "https://welib.org/"
   ],
   "manual_verify": [
     "z-lib.gl",
