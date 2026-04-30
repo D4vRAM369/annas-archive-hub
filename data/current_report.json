@@ -1,16 +1,15 @@
 {
-  "timestamp": "2026-04-30T00:44:02.503779",
+  "timestamp": "2026-04-30T06:57:50.680589",
   "active_auto": [
-    "https://annas-archive.pk/",
-    "https://libgen.vg/",
-    "https://annas-archive.gd/",
-    "https://libgen.bz/",
     "https://libgen.gl/",
-    "https://libgen.la/",
-    "https://pagelearnnext.monster/indexmac.php?flow_id=51&conversion=x1-roJ*wd70&bid=0.01&source_subid=zlibrary.sk&banner=9938035&carrier=Microsoft+Azure&IP=64.236.134.161&campaign=2381442&query=Z-library+Search+EBooks&state=il",
-    "https://annas-archive.li/",
+    "https://annas-archive.gd/",
+    "https://libgen.vg/",
     "https://annas-archive.gl/",
-    "https://welib.org/"
+    "https://annas-archive.li/",
+    "https://libgen.la/",
+    "https://annas-archive.pk/",
+    "https://libgen.bz/",
+    "https://pagelearnnext.monster/indexmac.php?flow_id=51&conversion=nZYHOH6i5xc&bid=0.01&source_subid=zlibrary.sk&banner=9938035&carrier=Microsoft+Azure&IP=64.236.135.0&campaign=2381442&query=Z-library+Search+EBooks&state=il"
   ],
   "manual_verify": [
     "z-lib.gl",
