@@ -88,5 +88,11 @@
     "timestamp": "2026-04-30T18:34:35.958633",
     "votes": 0,
     "verified": false
+  },
+  "www.google.com": {
+    "proposed_by": "auto-crawler",
+    "timestamp": "2026-05-05T00:41:06.655074",
+    "votes": 0,
+    "verified": false
   }
 }
