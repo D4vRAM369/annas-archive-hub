@@ -100,5 +100,11 @@
     "timestamp": "2026-05-07T07:05:05.281419",
     "votes": 0,
     "verified": false
+  },
+  "push.newsvot.com": {
+    "proposed_by": "auto-crawler",
+    "timestamp": "2026-05-07T12:43:31.648151",
+    "votes": 0,
+    "verified": false
   }
 }
