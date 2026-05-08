@@ -106,5 +106,11 @@
     "timestamp": "2026-05-07T12:43:31.648151",
     "votes": 0,
     "verified": false
+  },
+  "frozensignalnodedust.monster": {
+    "proposed_by": "auto-crawler",
+    "timestamp": "2026-05-08T00:43:58.548774",
+    "votes": 0,
+    "verified": false
   }
 }
