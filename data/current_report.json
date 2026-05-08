@@ -1,16 +1,15 @@
 {
-  "timestamp": "2026-05-08T00:43:58.549131",
+  "timestamp": "2026-05-08T06:41:46.647070",
   "active_auto": [
-    "https://frozensignalnodedust.monster/indexmac.php?flow_id=51&conversion=CB5XGyXT9gI&bid=0.005&source_subid=zlibrary.sk&banner=9938035&carrier=Microsoft+Azure&IP=64.236.133.177&campaign=2381442&query=Z-library+Search+EBooks&state=il",
-    "https://libgen.gl/",
-    "https://annas-archive.gd/",
+    "https://techblazing.com/z-library-search-tips-finding-exactly-what-youre-looking-for/?fi=0&cid=3c4ac6a6-e084-40ba-8d49-57498b22786e&sub=zlibrary.sk&utm_source=zlibrary.sk&hide_featured=1",
     "https://libgen.vg/",
     "https://libgen.la/",
-    "https://libgen.bz/",
     "https://annas-archive.pk/",
     "https://annas-archive.li/",
+    "https://libgen.bz/",
+    "https://annas-archive.gd/",
     "https://annas-archive.gl/",
-    "https://welib.org/"
+    "https://libgen.gl/"
   ],
   "manual_verify": [
     "z-lib.gl",
