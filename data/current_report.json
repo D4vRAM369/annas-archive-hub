@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-14T18:42:11.627017",
+  "timestamp": "2026-05-15T00:45:40.654583",
   "active_auto": [
-    "https://annas-archive.gl/",
-    "https://annas-archive.gd/",
-    "https://libgen.vg/",
     "https://libgen.gl/",
-    "https://libgen.la/",
-    "https://libgen.bz/",
-    "https://techblazing.com/z-library-search-tips-finding-exactly-what-youre-looking-for/?fi=0&cid=3c4ac6a6-e084-40ba-8d49-57498b22786e&sub=zlibrary.sk&utm_source=zlibrary.sk&hide_featured=1",
+    "https://libgen.vg/",
     "https://annas-archive.pk/",
-    "https://welib.org/"
+    "https://techblazing.com/z-library-search-tips-finding-exactly-what-youre-looking-for/?fi=0&cid=3c4ac6a6-e084-40ba-8d49-57498b22786e&sub=zlibrary.sk&utm_source=zlibrary.sk&hide_featured=1",
+    "https://annas-archive.gd/",
+    "https://annas-archive.li/",
+    "https://libgen.bz/",
+    "https://annas-archive.gl/",
+    "https://libgen.la/"
   ],
   "manual_verify": [
     "z-lib.gl",
