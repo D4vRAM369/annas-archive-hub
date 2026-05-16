@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-15T18:37:31.226333",
+  "timestamp": "2026-05-16T00:43:09.234014",
   "active_auto": [
-    "https://annas-archive.pk/",
-    "https://filter.explorads.com/filter?q=Z-library+Search+EBooks&i=Q5SnDolpCrg_0&ci=8338883629987931519&t=123723807&h=39",
-    "https://libgen.la/",
     "https://libgen.bz/",
-    "https://annas-archive.gd/",
     "https://annas-archive.gl/",
-    "https://annas-archive.li/",
+    "https://zlibrary.sk/",
+    "https://libgen.la/",
     "https://libgen.gl/",
-    "https://libgen.vg/"
+    "https://libgen.vg/",
+    "https://annas-archive.gd/",
+    "https://annas-archive.pk/",
+    "https://annas-archive.li/"
   ],
   "manual_verify": [
     "z-lib.gl",
