@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-06-12T00:57:52.667105",
+  "timestamp": "2026-06-12T07:42:56.518278",
   "active_auto": [
-    "https://libgen.vg/",
-    "https://zlibrary.sk/",
     "https://libgen.gl/",
-    "https://annas-archive.gl/",
-    "https://annas-archive.gd/",
+    "https://zlibrary.sk/",
     "https://libgen.la/",
+    "https://annas-archive.gl/",
+    "https://libgen.bz/",
     "https://annas-archive.pk/",
-    "https://libgen.bz/"
+    "https://libgen.vg/",
+    "https://annas-archive.gd/"
   ],
   "manual_verify": [
     "z-lib.gl",
