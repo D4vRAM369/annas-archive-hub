@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-07-06T16:42:12.042654",
+  "timestamp": "2026-07-06T16:48:47.341706",
   "active_auto": [
-    "https://libgen.vg/",
     "https://libgen.bz/",
+    "https://annas-archive.gl/",
     "https://annas-archive.pk/",
-    "https://libgen.la/",
-    "https://annas-archive.gl/"
+    "https://annas-archive.gd/",
+    "https://libgen.la/"
   ],
   "manual_verify": [
     "z-lib.gl",
@@ -20,5 +20,5 @@
     "https://dweb.link",
     "https://gateway.pinata.cloud"
   ],
-  "note": "manual_verify requiere abrir en navegador (protección Cloudflare)"
+  "note": "manual_verify requiere abrir en navegador (protecciÃ³n Cloudflare)"
 }
