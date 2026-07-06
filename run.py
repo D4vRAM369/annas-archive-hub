@@ -12,7 +12,7 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from config.settings import AUTO_VERIFIABLE, MANUAL_VERIFY
+from config.settings import AUTO_VERIFIABLE, MANUAL_VERIFY, BLOCKED_DOMAINS
 from core.domain_tester import DomainTester
 from core.open_slum_crawler import crawl_open_slum
 from core.social_crawler import SocialCrawler
@@ -23,14 +23,14 @@ from core.voter import Voter
 def update_readme(cid):
     """Actualiza el CID en los archivos README (inglés y español)."""
     files = ["README.md", "README.es.md"]
-    
+
     for filename in files:
         if not os.path.exists(filename):
             continue
-            
+
         with open(filename, "r", encoding="utf-8") as f:
             content = f.read()
-        
+
         # Regex para encontrar el CID (asumiendo formato Qm...)
         # Busca patrones tipo `**Current CID:** `Qm...` o `CID actual: `Qm...`
         new_content = re.sub(
@@ -38,14 +38,14 @@ def update_readme(cid):
             r"\1" + cid + r"\3",
             content
         )
-        
+
         # También actualizar los links de IPFS en las tablas
         new_content = re.sub(
             r"/ipfs/Qm[a-zA-Z0-9]+",
             f"/ipfs/{cid}",
             new_content
         )
-        
+
         if content != new_content:
             with open(filename, "w", encoding="utf-8") as f:
                 f.write(new_content)
@@ -69,7 +69,7 @@ def main():
     slum_domains = crawl_open_slum()
     sc = SocialCrawler()
     social_domains = sc.crawl_all()
-    
+
     # 2. Obtener dominios conocidos de la base de datos
     verified_domains = voter.get_verified()
     print(f"  [+] Dominios verificados en DB: {len(verified_domains)}")
@@ -79,7 +79,14 @@ def main():
     all_candidates = list(dict.fromkeys(
         slum_domains + social_domains + list(AUTO_VERIFIABLE) + verified_domains
     ))
-    
+
+    # Filtrar bloqueados ANTES de testear: ni siquiera queremos gastar una
+    # petición de red contra un dominio ya confirmado como malicioso o ruido.
+    blocked_found = [d for d in all_candidates if d in BLOCKED_DOMAINS]
+    if blocked_found:
+        print(f"  [!] Ignorando {len(blocked_found)} dominio(s) bloqueado(s): {blocked_found}")
+    all_candidates = [d for d in all_candidates if d not in BLOCKED_DOMAINS]
+
     print(f"\n[2/5] Probando {len(all_candidates)} dominios...")
     active = tester.test_multiple(all_candidates)
     print(f"  [+] Activos encontrados: {len(active)}")
@@ -93,8 +100,22 @@ def main():
 
     # 5. Publicar en IPFS
     print("\n[3/5] Publicando en IPFS...")
-    hash_id = publisher.publish_report(active, MANUAL_VERIFY)
-    
+    try:
+        hash_id = publisher.publish_report(active, MANUAL_VERIFY)
+    except Exception as e:
+        print(f"[!] Excepción inesperada en publish_report: {e}")
+        hash_id = None
+
+    if hash_id is None:
+        print("[!] No se obtuvo CID nuevo (Pinata falló y no hay daemon IPFS local).")
+        print("[!] Manteniendo el CID anterior si existe. El pipeline continúa.")
+        previous = publisher.get_current_hash()
+        if previous:
+            print(f"[*] CID anterior conservado: {previous}")
+            hash_id = previous
+        else:
+            print("[!] No hay CID previo. Los steps siguientes que dependan de él pueden fallar.")
+
     if hash_id:
         print(f"  [+] CID: {hash_id}")
         # 6. Actualizar README
