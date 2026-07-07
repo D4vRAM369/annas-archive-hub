@@ -17,21 +17,21 @@
 ## 📡 Latest Report (IPFS — Immutable)
 
 <<<<<<< HEAD
-**Current CID:** `QmbsquncernDrJuwhXqJ9d3bLvxpT2cYireszL53NsULok`
+**Current CID:** `QmevmLPKFo6F19tKggeH9YtSwUnXTjki6uP9RyESKJwhTH`
 
 | Gateway | Link |
 |---------|------|
-| ipfs.io | [Open report](https://ipfs.io/ipfs/QmbsquncernDrJuwhXqJ9d3bLvxpT2cYireszL53NsULok) |
-| dweb.link | [Open report](https://dweb.link/ipfs/QmbsquncernDrJuwhXqJ9d3bLvxpT2cYireszL53NsULok) |
-| Pinata | [Open report](https://gateway.pinata.cloud/ipfs/QmbsquncernDrJuwhXqJ9d3bLvxpT2cYireszL53NsULok) |
+| ipfs.io | [Open report](https://ipfs.io/ipfs/QmevmLPKFo6F19tKggeH9YtSwUnXTjki6uP9RyESKJwhTH) |
+| dweb.link | [Open report](https://dweb.link/ipfs/QmevmLPKFo6F19tKggeH9YtSwUnXTjki6uP9RyESKJwhTH) |
+| Pinata | [Open report](https://gateway.pinata.cloud/ipfs/QmevmLPKFo6F19tKggeH9YtSwUnXTjki6uP9RyESKJwhTH) |
 =======
-**Current CID:** `QmbsquncernDrJuwhXqJ9d3bLvxpT2cYireszL53NsULok`
+**Current CID:** `QmevmLPKFo6F19tKggeH9YtSwUnXTjki6uP9RyESKJwhTH`
 
 | Gateway | Link |
 |---------|------|
-| ipfs.io | [Open report](https://ipfs.io/ipfs/QmbsquncernDrJuwhXqJ9d3bLvxpT2cYireszL53NsULok) |
-| dweb.link | [Open report](https://dweb.link/ipfs/QmbsquncernDrJuwhXqJ9d3bLvxpT2cYireszL53NsULok) |
-| Pinata | [Open report](https://gateway.pinata.cloud/ipfs/QmbsquncernDrJuwhXqJ9d3bLvxpT2cYireszL53NsULok) |
+| ipfs.io | [Open report](https://ipfs.io/ipfs/QmevmLPKFo6F19tKggeH9YtSwUnXTjki6uP9RyESKJwhTH) |
+| dweb.link | [Open report](https://dweb.link/ipfs/QmevmLPKFo6F19tKggeH9YtSwUnXTjki6uP9RyESKJwhTH) |
+| Pinata | [Open report](https://gateway.pinata.cloud/ipfs/QmevmLPKFo6F19tKggeH9YtSwUnXTjki6uP9RyESKJwhTH) |
 >>>>>>> 2d5ae9e (fix(ipfs): rotación automática de pins + fallback local seguro)
 
 > The CID is updated automatically every 6 hours. Older CIDs remain permanently accessible.
