@@ -21,16 +21,8 @@
 | ipfs.io | [Abrir reporte](https://ipfs.io/ipfs/QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq) |
 | dweb.link | [Abrir reporte](https://dweb.link/ipfs/QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq) |
 | Pinata | [Abrir reporte](https://gateway.pinata.cloud/ipfs/QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq) |
-=======
-**CID actual:** `QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq`
 
-| Gateway | Enlace |
-|---------|--------|
-| ipfs.io | [Abrir reporte](https://ipfs.io/ipfs/QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq) |
-| dweb.link | [Abrir reporte](https://dweb.link/ipfs/QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq) |
-| Pinata | [Abrir reporte](https://gateway.pinata.cloud/ipfs/QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq) |
-
-> El CID se actualiza automáticamente cada 6 horas. Los CIDs anteriores permanecen accesibles para siempre.
+> El CID se actualiza automáticamente cada 12 horas. Los CIDs anteriores permanecen accesibles para siempre.
 
 ---
 
@@ -53,6 +45,16 @@
 
 ---
 
+## 🛑 Aviso de Seguridad — Captchas Falsos ("ClickFix")
+
+**NUNCA sigas una página de "captcha" o "verificación humana" que te pida abrir PowerShell, CMD, Terminal o el diálogo Ejecutar (Win + R) y pegar o ejecutar un comando.**
+
+Ningún captcha legítimo requiere interactuar con tu terminal. Estas páginas copian silenciosamente un comando malicioso a tu portapapeles y te engañan para que lo ejecutes — infectando tu máquina con malware.
+
+Si cualquier mirror o enlace muestra este tipo de "verificación": **cierra la pestaña inmediatamente y no pegues nada.**
+
+---
+
 ## 🚀 Cómo Funciona
 
 ```
@@ -68,8 +70,8 @@ Mastodon      ──┘
 | ✅ Verificación inteligente | curl_cffi con impersonación de Chrome para evitar bloqueos |
 | 🚫 Filtro anti-spam | Bloquea dominios falsos y canales de Telegram impostores |
 | 📦 Publicación en IPFS | Reporte inmutable pinneado en Pinata — sin servidor propio |
-| 🗳️ Sistema de votación | Verificación comunitaria para dominios dudosos |
-| ⏱️ Automatización | Se ejecuta solo vía cron cada 6 horas |
+| 🗳️ Sistema de votación | ⚠️ No disponible actualmente — los dominios se descubren solo mediante los crawlers |
+| ⏱️ Automatización | Se ejecuta solo vía cron cada 12 horas |
 
 ---
 
@@ -78,7 +80,7 @@ Mastodon      ──┘
 **Requisitos:** Python 3.12+, Git
 
 ```bash
-git clone https://github.com/annas-archive-hub/annas-archive-hub
+git clone https://github.com/D4vRAM369/annas-archive-hub
 cd annas-archive-hub
 
 # Crear y activar entorno virtual
@@ -122,6 +124,8 @@ python main.py
   0. Salir
 ```
 
+> ⚠️ **Nota:** El sistema de votación (opciones 3–5) no funciona actualmente. Los dominios nuevos se descubren exclusivamente mediante los crawlers automáticos (opciones 8–9).
+
 ### Opción B — Pipeline automático (`run.py`)
 
 Ejecuta todo en secuencia sin intervención: rastrear → verificar → publicar → log.
@@ -140,7 +144,7 @@ python run.py
 ✅ Ejecución completada
 ```
 
-### Automatizar con cron (cada 6 horas)
+### Automatizar con cron (cada 12 horas)
 
 ```bash
 crontab -e
@@ -149,7 +153,7 @@ crontab -e
 Añade esta línea (reemplaza la ruta con la ubicación real del proyecto):
 
 ```
-0 */6 * * * cd /home/tuusuario/annas-archive-hub && source venv/bin/activate && python run.py >> logs/cron.log 2>&1
+0 */12 * * * cd /home/tuusuario/annas-archive-hub && source venv/bin/activate && python run.py >> logs/cron.log 2>&1
 ```
 
 ---

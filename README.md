@@ -16,7 +16,6 @@
 
 ## 📡 Latest Report (IPFS — Immutable)
 
-<<<<<<< HEAD
 **Current CID:** `QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq`
 
 | Gateway | Link |
@@ -24,17 +23,8 @@
 | ipfs.io | [Open report](https://ipfs.io/ipfs/QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq) |
 | dweb.link | [Open report](https://dweb.link/ipfs/QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq) |
 | Pinata | [Open report](https://gateway.pinata.cloud/ipfs/QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq) |
-=======
-**Current CID:** `QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq`
 
-| Gateway | Link |
-|---------|------|
-| ipfs.io | [Open report](https://ipfs.io/ipfs/QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq) |
-| dweb.link | [Open report](https://dweb.link/ipfs/QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq) |
-| Pinata | [Open report](https://gateway.pinata.cloud/ipfs/QmYzbJEbhXgYEYemEBjSeRNwiryditDzTzDJySeaJG9HCq) |
->>>>>>> 2d5ae9e (fix(ipfs): rotación automática de pins + fallback local seguro)
-
-> The CID is updated automatically every 6 hours. Older CIDs remain permanently accessible.
+> The CID is updated automatically every 12 hours. Older CIDs remain permanently accessible.
 
 ---
 
@@ -57,6 +47,16 @@
 
 ---
 
+## 🛑 Security Warning — Fake CAPTCHA Scams ("ClickFix")
+
+**NEVER follow a "captcha" or "human verification" page that asks you to open PowerShell, CMD, Terminal, or the Run dialog (Win + R) and paste or execute a command.**
+
+No legitimate captcha ever requires interacting with your terminal. These pages silently copy a malicious command to your clipboard and trick you into running it — infecting your machine with malware.
+
+If any mirror or link shows this kind of "verification": **close the tab immediately and do not paste anything.**
+
+---
+
 ## 🚀 How It Works
 
 ```
@@ -72,8 +72,8 @@ Mastodon      ──┘
 | ✅ Smart verification | curl_cffi with Chrome impersonation to bypass blocks |
 | 🚫 Spam filtering | Blocks fake domains and spam Telegram channels |
 | 📦 IPFS publishing | Immutable report pinned to Pinata — no server needed |
-| 🗳️ Voting system | Community verification for uncertain domains |
-| ⏱️ Auto-scheduled | Runs unattended via cron every 6 hours |
+| 🗳️ Voting system | ⚠️ Currently unavailable — domains are discovered via the crawlers only |
+| ⏱️ Auto-scheduled | Runs unattended via cron every 12 hours |
 
 ---
 
@@ -82,7 +82,7 @@ Mastodon      ──┘
 **Requirements:** Python 3.12+, Git
 
 ```bash
-git clone https://github.com/annas-archive-hub/annas-archive-hub
+git clone https://github.com/D4vRAM369/annas-archive-hub
 cd annas-archive-hub
 
 # Create and activate virtual environment
@@ -126,6 +126,8 @@ python main.py
   0. Exit
 ```
 
+> ⚠️ **Note:** The voting system (options 3–5) is currently not functional. New domains are discovered exclusively through the automated crawlers (options 8–9).
+
 ### Option B — Automated pipeline (`run.py`)
 
 Runs everything unattended in sequence: crawl → verify → publish → log.
@@ -144,7 +146,7 @@ python run.py
 ✅ Done
 ```
 
-### Automate with cron (every 6 hours)
+### Automate with cron (every 12 hours)
 
 ```bash
 crontab -e
@@ -153,7 +155,7 @@ crontab -e
 Add this line (replace the path with your actual clone location):
 
 ```
-0 */6 * * * cd /home/youruser/annas-archive-hub && source venv/bin/activate && python run.py >> logs/cron.log 2>&1
+0 */12 * * * cd /home/youruser/annas-archive-hub && source venv/bin/activate && python run.py >> logs/cron.log 2>&1
 ```
 
 ---
