@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]  # Se activa al subir a main
   schedule:
-    - cron: '0 */6 * * *'  # Cada 6 horas
+    - cron: '0 */12 * * *'  # Cada 12 horas
   workflow_dispatch:      # Permite ejecución manual desde GitHub
 
 permissions:
