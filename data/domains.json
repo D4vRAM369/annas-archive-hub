@@ -64,5 +64,11 @@
     "timestamp": "2026-07-06T16:33:31.221414",
     "votes": 0,
     "verified": false
+  },
+  "z-lib.qa": {
+    "proposed_by": "auto-crawler",
+    "timestamp": "2026-08-09T12:51:06.798939",
+    "votes": 0,
+    "verified": false
   }
 }
