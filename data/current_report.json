@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-03T15:55:50.126735",
+  "timestamp": "2026-09-04T03:12:01.856731",
   "active_auto": [
     "https://libgen.bz/",
+    "https://z-lib.qa/",
+    "https://annas-archive.pk/",
     "https://annas-archive.gl/",
     "https://libgen.gl/",
-    "https://annas-archive.pk/",
-    "https://libgen.la/",
     "https://annas-archive.gd/",
+    "https://libgen.la/",
     "https://libgen.vg/",
-    "https://annas-archive.li/",
-    "https://z-lib.qa/"
+    "https://annas-archive.li/"
   ],
   "manual_verify": [
     "z-lib.gl",
