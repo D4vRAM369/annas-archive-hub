@@ -16,13 +16,13 @@
 
 ## 📡 Latest Report (IPFS — Immutable)
 
-**Current CID:** `QmUArLn6yUeh5HQSFBMytFELK53N4HPXAQcLrWVRc9Xgqi`
+**Current CID:** `QmfX8FD8YY1DWmJF28a1hYWyTtbpNcomUJkKc1DFyq1ZG8`
 
 | Gateway | Link |
 |---------|------|
-| ipfs.io | [Open report](https://ipfs.io/ipfs/QmUArLn6yUeh5HQSFBMytFELK53N4HPXAQcLrWVRc9Xgqi) |
-| dweb.link | [Open report](https://dweb.link/ipfs/QmUArLn6yUeh5HQSFBMytFELK53N4HPXAQcLrWVRc9Xgqi) |
-| Pinata | [Open report](https://gateway.pinata.cloud/ipfs/QmUArLn6yUeh5HQSFBMytFELK53N4HPXAQcLrWVRc9Xgqi) |
+| ipfs.io | [Open report](https://ipfs.io/ipfs/QmfX8FD8YY1DWmJF28a1hYWyTtbpNcomUJkKc1DFyq1ZG8) |
+| dweb.link | [Open report](https://dweb.link/ipfs/QmfX8FD8YY1DWmJF28a1hYWyTtbpNcomUJkKc1DFyq1ZG8) |
+| Pinata | [Open report](https://gateway.pinata.cloud/ipfs/QmfX8FD8YY1DWmJF28a1hYWyTtbpNcomUJkKc1DFyq1ZG8) |
 
 > The CID is updated automatically every 12 hours. Older CIDs remain permanently accessible.
 
