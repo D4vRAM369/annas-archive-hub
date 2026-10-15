@@ -1,12 +1,10 @@
 {
-  "timestamp": "2026-10-14T16:42:26.476382",
+  "timestamp": "2026-10-15T03:30:47.579212",
   "active_auto": [
-    "https://z-lib.qa/",
     "https://annas-archive.pk/",
-    "https://annas-archive.li/",
     "https://annas-archive.gd/",
-    "https://annas-archive.gl/",
-    "https://welib.org/"
+    "https://z-lib.qa/",
+    "https://annas-archive.gl/"
   ],
   "manual_verify": [
     "z-lib.gl",
