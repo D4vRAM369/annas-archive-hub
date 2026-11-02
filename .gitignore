@@ -64,3 +64,8 @@ QUICK_REFERENCE.md
 # Scripts de experimentación (no forman parte del proyecto)
 scripts/
 node_modules/
+
+# Documentos internos de proyecto (no versionar)
+SPEC.md
+ROADMAP.md
+HANDOFF.md
