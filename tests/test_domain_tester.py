@@ -30,3 +30,19 @@ def test_cid_v0_to_v1_known_pair():
     # par real (CID de Pinata -> link inbrowser.link verificado por el usuario)
     assert cid_v0_to_v1("QmYdbTjHZvZfDGY53ZmkPy89hYV1apP5KCWpKmoiPpv3Vh") == \
         "bafybeiey5qjbkc3km7zardukvolpsvvcerxpxw4sn5luhng4dbcoglpeaa"
+
+
+def test_render_domains_groups_and_sorts():
+    import run
+    out = run.render_domains(
+        {"annas_archive": ["https://annas-archive.pk/", "https://annas-archive.gl/"],
+         "libgen": ["https://libgen.la/"], "zlibrary": ["https://welib.org/"]},
+        ["z-lib.gl"], "es")
+    assert out.index("annas-archive.gl") < out.index("annas-archive.pk") < out.index("libgen.la")
+    assert "welib.org" in out and "z-lib.gl" in out and "Activo" in out
+
+
+def test_render_domains_skips_empty_service():
+    import run
+    out = run.render_domains({"annas_archive": ["https://annas-archive.gl/"]}, ["z-lib.gl"], "en")
+    assert "Libgen" not in out and "### Z-Library" not in out and "z-lib.gl" in out

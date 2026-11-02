@@ -30,14 +30,15 @@
 
 ## ✅ Dominios Activos (Última Verificación)
 
+<!-- DOMAINS:START -->
 ### Anna's Archive
 
 | Dominio | Estado |
 |--------|--------|
-| annas-archive.gl | ✅ Activo |
-| annas-archive.pk | ✅ Activo |
 | annas-archive.gd | ✅ Activo |
+| annas-archive.gl | ✅ Activo |
 | annas-archive.li | ✅ Activo |
+| annas-archive.pk | ✅ Activo |
 
 ### Libgen (servicio relacionado)
 
@@ -48,16 +49,9 @@
 | libgen.la | ✅ Activo |
 | libgen.vg | ✅ Activo |
 
-### Z-Library (servicio relacionado)
-
-| Dominio | Estado |
-|--------|--------|
-| z-library.bz | ✅ Activo |
-| z-library.se | ✅ Activo |
-| welib.org | ✅ Activo |
-
 > ⚠️ Los espejos de Z-Library z-lib.gl, go-to-library.sk, z-lib.gd, z-library.sk, 1lib.sk requieren abrirse en el navegador por protección Cloudflare (van como `manual_verify` en el reporte).
 > 🌍 Los dominios se verifican desde servidores de GitHub (EE.UU.). Tu ISP/país puede bloquear alguno (p. ej. `.gd`/`.li` en España): prueba otro.
+<!-- DOMAINS:END -->
 
 ---
 

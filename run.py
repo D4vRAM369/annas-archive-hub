@@ -59,6 +59,57 @@ def update_readme(cid):
             print(f"[*] {filename} ya estaba actualizado o no se encontró el patrón")
 
 
+_T = {
+    "en": dict(d="Domain", s="Status", ok="✅ Active", libgen="Libgen (related service)",
+               zl="Z-Library (related service)",
+               man="> ⚠️ Z-Library mirrors {m} require opening in a browser due to Cloudflare protection (listed as `manual_verify` in the report).",
+               geo="> 🌍 Domains are verified from GitHub servers (USA). Your ISP/country may block some (e.g. `.gd`/`.li` in Spain): try another."),
+    "es": dict(d="Dominio", s="Estado", ok="✅ Activo", libgen="Libgen (servicio relacionado)",
+               zl="Z-Library (servicio relacionado)",
+               man="> ⚠️ Los espejos de Z-Library {m} requieren abrirse en el navegador por protección Cloudflare (van como `manual_verify` en el reporte).",
+               geo="> 🌍 Los dominios se verifican desde servidores de GitHub (EE.UU.). Tu ISP/país puede bloquear alguno (p. ej. `.gd`/`.li` en España): prueba otro."),
+}
+
+
+def render_domains(by_service, manual, lang):
+    """Markdown de las tablas por servicio. Los z-lib de manual_verify se suman a Z-Library."""
+    t = _T[lang]
+    host = lambda u: u.replace("https://", "").rstrip("/")
+
+    def table(title, urls):
+        if not urls:
+            return ""  # sin filas no hay tabla (la nota de manual_verify sigue abajo)
+        rows = "".join(f"| {host(u)} | {t['ok']} |\n" for u in sorted(set(urls)))
+        return f"### {title}\n\n| {t['d']} | {t['s']} |\n|--------|--------|\n{rows}\n"
+
+    zl = list(by_service.get("zlibrary", []))
+    out = table("Anna's Archive", by_service.get("annas_archive", []))
+    out += table(t["libgen"], by_service.get("libgen", []))
+    out += table(t["zl"], zl)
+    return out + t["man"].format(m=", ".join(manual)) + "\n" + t["geo"] + "\n"
+
+
+def update_readme_domains(by_service, manual):
+    """Reescribe la zona entre <!-- DOMAINS:START/END -->. Sin Anna's encontrado no toca nada."""
+    if not by_service.get("annas_archive"):
+        print("[!] Sin Anna's Archive activos: tablas del README sin cambios")
+        return
+    for filename, lang in (("README.md", "en"), ("README.es.md", "es")):
+        if not os.path.exists(filename):
+            continue
+        with open(filename, encoding="utf-8") as f:
+            content = f.read()
+        new = re.sub(
+            r"(<!-- DOMAINS:START -->\n).*?(<!-- DOMAINS:END -->)",
+            lambda m: m.group(1) + render_domains(by_service, manual, lang) + m.group(2),
+            content, flags=re.S,
+        )
+        if new != content:
+            with open(filename, "w", encoding="utf-8") as f:
+                f.write(new)
+            print(f"[+] {filename}: tablas de dominios regeneradas")
+
+
 def main():
     print("=" * 50)
     print("   ANNA'S ARCHIVE HUB - EJECUCIÓN AUTOMÁTICA")
@@ -126,6 +177,7 @@ def main():
         # 6. Actualizar README
         print("\n[4/5] Actualizando documentación...")
         update_readme(hash_id)
+        update_readme_domains(tester.by_service, MANUAL_VERIFY)
     else:
         print("  [!] Error al publicar en IPFS")
 
