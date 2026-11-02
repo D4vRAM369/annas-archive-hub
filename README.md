@@ -30,20 +30,34 @@
 
 ## ✅ Active Domains (Last Verified)
 
+### Anna's Archive
+
 | Domain | Status |
 |--------|--------|
 | annas-archive.gl | ✅ Active |
 | annas-archive.pk | ✅ Active |
 | annas-archive.gd | ✅ Active |
+| annas-archive.li | ✅ Active |
+
+### Libgen (related service)
+
+| Domain | Status |
+|--------|--------|
 | libgen.bz | ✅ Active |
 | libgen.gl | ✅ Active |
 | libgen.la | ✅ Active |
 | libgen.vg | ✅ Active |
+
+### Z-Library (related service)
+
+| Domain | Status |
+|--------|--------|
 | z-library.bz | ✅ Active |
 | z-library.se | ✅ Active |
 | welib.org | ✅ Active |
 
-> ⚠️ Some domains (z-lib.gl, go-to-library.sk, etc.) require opening in a browser due to Cloudflare protection.
+> ⚠️ Z-Library mirrors z-lib.gl, go-to-library.sk, z-lib.gd, z-library.sk, 1lib.sk require opening in a browser due to Cloudflare protection (listed as `manual_verify` in the report).
+> 🌍 Domains are verified from GitHub servers (USA). Your ISP/country may block some (e.g. `.gd`/`.li` in Spain): try another.
 
 ---
 
