@@ -7,6 +7,11 @@ on:
     - cron: '0 */12 * * *'  # Cada 12 horas
   workflow_dispatch:      # Permite ejecución manual desde GitHub
 
+# Un run a la vez: evita "rejected (fetch first)" cuando varios pushes disparan el workflow
+concurrency:
+  group: update-domains
+  cancel-in-progress: false
+
 permissions:
   contents: write    # Permite al bot hacer push de cambios
   pages: write       # Opcional, por si usas GitHub Pages
@@ -60,4 +65,5 @@ jobs:
           # Añadimos solo lo necesario: reportes y base de datos
           git add data/ README.md README.es.md
           git diff --quiet && git diff --staged --quiet || git commit -m "chore: auto-update domains and CID [skip ci]"
+          git pull --rebase -X theirs
           git push
