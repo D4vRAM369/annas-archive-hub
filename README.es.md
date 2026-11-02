@@ -22,6 +22,8 @@
 | dweb.link | [Abrir reporte](https://dweb.link/ipfs/QmR31nCFj8nKbBJS4X2CaspdCrVWMi12k1Ft1CZe9vfT4X) |
 | inbrowser.link (recommended) | [Abrir reporte](https://bafybeibibzxedpihmzut6wwywe3sbgix32k7jbpedvunenbwnfjdn4fx6q.ipfs.inbrowser.link/) |
 
+> 🔗 **Enlace permanente, siempre actualizado (sin IPFS):** [https://raw.githubusercontent.com/D4vRAM369/annas-archive-hub/main/data/current_report.json](https://raw.githubusercontent.com/D4vRAM369/annas-archive-hub/main/data/current_report.json)
+>
 > El CID se actualiza automáticamente cada 12 horas. Los CIDs anteriores permanecen accesibles para siempre.
 
 ---
