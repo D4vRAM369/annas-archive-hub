@@ -54,6 +54,8 @@ MANUAL_VERIFY = [
 #     www.google.com                - fallo de captura del crawler, no un espejo
 #     search-bits.com               - agregador genérico, sin relación visible
 #     push.newsvot.com              - agregador genérico, sin relación visible
+#     z-lib.qa                      - 2026-11-02: sitio "Z-Library Project" de terceros (SEO,
+#                                     enlaza a Wikipedia, /s/ da 404). Verificado a mano, no oficial.
 BLOCKED_DOMAINS = [
     "zlibrary.sk",
     "techblazing.com",
@@ -65,6 +67,7 @@ BLOCKED_DOMAINS = [
     "www.google.com",
     "search-bits.com",
     "push.newsvot.com",
+    "z-lib.qa",
 ]
 
 # URLs de open-slum para rastrear

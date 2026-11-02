@@ -101,7 +101,7 @@ def main():
     # 5. Publicar en IPFS
     print("\n[3/5] Publicando en IPFS...")
     try:
-        hash_id = publisher.publish_report(active, MANUAL_VERIFY)
+        hash_id = publisher.publish_report(active, MANUAL_VERIFY, tester.by_service)
     except Exception as e:
         print(f"[!] Excepción inesperada en publish_report: {e}")
         hash_id = None

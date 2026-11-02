@@ -27,7 +27,6 @@ from config.settings import DATA_DIR, IPFS_GATEWAY, IPFS_HASH_FILE
 # Gateways públicos donde el CID será accesible una vez pinneado en Pinata
 PUBLIC_GATEWAYS = [
     "https://ipfs.io/ipfs/{cid}",
-    "https://cloudflare-ipfs.com/ipfs/{cid}",
     "https://dweb.link/ipfs/{cid}",
     "https://gateway.pinata.cloud/ipfs/{cid}",
 ]
@@ -50,7 +49,7 @@ class IPFSPublisher:
             self.keep_last = 10
 
     # ── Público ────────────────────────────────────────────────────────────
-    def publish_report(self, active_domains, manual_domains):
+    def publish_report(self, active_domains, manual_domains, by_service=None):
         """
         Genera el reporte JSON y lo publica en IPFS.
         Devuelve el CID (hash) o None si falla todo.
@@ -58,7 +57,7 @@ class IPFSPublisher:
         devuelve None para que el pipeline pueda decidir qué hacer.
         """
         try:
-            self._write_report(active_domains, manual_domains)
+            self._write_report(active_domains, manual_domains, by_service)
         except Exception as e:
             print(f"  [!] No se pudo escribir el reporte local: {e}")
             return None
@@ -99,12 +98,28 @@ class IPFSPublisher:
         return [gw.format(cid=cid) for gw in PUBLIC_GATEWAYS]
 
     # ── Privado ────────────────────────────────────────────────────────────
-    def _write_report(self, active_domains, manual_domains):
+    @staticmethod
+    def _related(by_service, manual_domains):
+        """Servicios que no son Anna's. Los manual_verify (Cloudflare) son Z-Library."""
+        related = {k: list(v) for k, v in (by_service or {}).items() if k != "annas_archive"}
+        zl = related.setdefault("zlibrary", [])
+        for d in manual_domains:
+            url = f"https://{d}/"
+            if url not in zl:
+                zl.append(url)
+        return related
+
+    def _write_report(self, active_domains, manual_domains, by_service=None):
         report = {
             "timestamp": datetime.now().isoformat(),
-            "active_auto": active_domains,
+            # active_auto = SOLO Anna's Archive verificado (host o contenido).
+            # Otros servicios van aparte para no confundir al lector.
+            "active_auto": (by_service or {}).get("annas_archive", active_domains if by_service is None else []),
+            "related_services": self._related(by_service, manual_domains),
             "manual_verify": manual_domains,
             "gateways": [gw.split("/ipfs/")[0] for gw in PUBLIC_GATEWAYS],
+            "reachability_note": "Dominios verificados desde servidores de GitHub (EE.UU.). "
+                                 "Pueden estar bloqueados por tu ISP/país (p. ej. España): prueba otro.",
             "note": "manual_verify requiere abrir en navegador (protección Cloudflare)",
         }
         os.makedirs(DATA_DIR, exist_ok=True)
