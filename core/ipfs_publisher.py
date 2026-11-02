@@ -14,6 +14,7 @@ Variables de entorno:
   PINATA_API_SECRET       — obligatoria para usar Pinata
   PINATA_KEEP_LAST        — opcional, cuántos pins conservar (default 10)
 """
+import base64
 import json
 import os
 import shutil
@@ -28,8 +29,26 @@ from config.settings import DATA_DIR, IPFS_GATEWAY, IPFS_HASH_FILE
 PUBLIC_GATEWAYS = [
     "https://ipfs.io/ipfs/{cid}",
     "https://dweb.link/ipfs/{cid}",
-    "https://gateway.pinata.cloud/ipfs/{cid}",
 ]
+
+_B58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+
+
+def cid_v0_to_v1(cid):
+    """QmXXX (v0, base58) -> bafyXXX (v1, base32, dag-pb). Mismo contenido, otra forma."""
+    if not cid.startswith("Qm"):
+        return cid  # ya es v1
+    n = 0
+    for ch in cid:
+        n = n * 58 + _B58.index(ch)
+    raw = n.to_bytes(34, "big")  # multihash sha2-256: 0x12 0x20 + 32 bytes
+    return "b" + base64.b32encode(b"\x01\x70" + raw).decode().lower().rstrip("=")
+
+
+def browser_url(cid):
+    """Gateway de subdominio: resuelve vía navegador, no depende de la caché de Pinata."""
+    return f"https://{cid_v0_to_v1(cid)}.ipfs.inbrowser.link/"
+
 
 # Identificador del proyecto en la metadata de Pinata.
 # Se usa para no tocar pins de otros proyectos que compartan la cuenta.
@@ -95,7 +114,7 @@ class IPFSPublisher:
         cid = cid or self.get_current_hash()
         if not cid:
             return []
-        return [gw.format(cid=cid) for gw in PUBLIC_GATEWAYS]
+        return [browser_url(cid)] + [gw.format(cid=cid) for gw in PUBLIC_GATEWAYS]
 
     # ── Privado ────────────────────────────────────────────────────────────
     @staticmethod

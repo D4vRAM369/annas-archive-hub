@@ -23,3 +23,10 @@ def test_body_mention_is_not_enough():
 
 def test_zlibrary_by_host():
     assert classify("https://z-lib.gd/", "") == "zlibrary"
+
+
+def test_cid_v0_to_v1_known_pair():
+    from core.ipfs_publisher import cid_v0_to_v1
+    # par real (CID de Pinata -> link inbrowser.link verificado por el usuario)
+    assert cid_v0_to_v1("QmYdbTjHZvZfDGY53ZmkPy89hYV1apP5KCWpKmoiPpv3Vh") == \
+        "bafybeiey5qjbkc3km7zardukvolpsvvcerxpxw4sn5luhng4dbcoglpeaa"

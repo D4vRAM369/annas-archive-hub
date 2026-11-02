@@ -16,7 +16,7 @@ from config.settings import AUTO_VERIFIABLE, MANUAL_VERIFY, BLOCKED_DOMAINS
 from core.domain_tester import DomainTester
 from core.open_slum_crawler import crawl_open_slum
 from core.social_crawler import SocialCrawler
-from core.ipfs_publisher import IPFSPublisher
+from core.ipfs_publisher import IPFSPublisher, browser_url
 from core.voter import Voter
 
 
@@ -44,6 +44,11 @@ def update_readme(cid):
             r"/ipfs/Qm[a-zA-Z0-9]+",
             f"/ipfs/{cid}",
             new_content
+        )
+
+        # Fila "inbrowser.link": subdominio con CID v1, distinto formato que /ipfs/Qm...
+        new_content = re.sub(
+            r"https://baf[a-z2-7]+\.ipfs\.inbrowser\.link/", browser_url(cid), new_content
         )
 
         if content != new_content:

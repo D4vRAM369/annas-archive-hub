@@ -22,7 +22,7 @@
 |---------|------|
 | ipfs.io | [Open report](https://ipfs.io/ipfs/QmYdbTjHZvZfDGY53ZmkPy89hYV1apP5KCWpKmoiPpv3Vh) |
 | dweb.link | [Open report](https://dweb.link/ipfs/QmYdbTjHZvZfDGY53ZmkPy89hYV1apP5KCWpKmoiPpv3Vh) |
-| Pinata | [Open report](https://gateway.pinata.cloud/ipfs/QmYdbTjHZvZfDGY53ZmkPy89hYV1apP5KCWpKmoiPpv3Vh) |
+| inbrowser.link (recommended) | [Open report](https://bafybeiey5qjbkc3km7zardukvolpsvvcerxpxw4sn5luhng4dbcoglpeaa.ipfs.inbrowser.link/) |
 
 > The CID is updated automatically every 12 hours. Older CIDs remain permanently accessible.
 
