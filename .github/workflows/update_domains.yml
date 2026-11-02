@@ -42,6 +42,22 @@ jobs:
           PINATA_API_SECRET: ${{ secrets.PINATA_API_SECRET }}
         run: python run.py
 
+      - name: Set up Node (IPNS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Link IPNS fijo que apunta al CID actual. Si falla (servicio caído, sin clave)
+      # no debe tumbar el pipeline: el resto del reporte ya está publicado.
+      - name: Publish IPNS pointer
+        continue-on-error: true
+        env:
+          IPNS_KEY: ${{ secrets.IPNS_KEY }}
+        run: |
+          cd scripts
+          npm ci --silent
+          node publish_ipns.mjs
+
       - name: Update GitHub repository homepage
         env:
           GH_PAT: ${{ secrets.MY_PAT }}
