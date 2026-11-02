@@ -14,13 +14,13 @@
 
 ## 📡 Último Reporte (IPFS — Inmutable)
 
-**CID actual:** `Qmc7Vf31uLYYBtoQChRByMykPBe29LaVn2Z6Ce2EfnSaWb`
+**CID actual:** `QmR31nCFj8nKbBJS4X2CaspdCrVWMi12k1Ft1CZe9vfT4X`
 
 | Gateway | Enlace |
 |---------|--------|
-| ipfs.io | [Abrir reporte](https://ipfs.io/ipfs/Qmc7Vf31uLYYBtoQChRByMykPBe29LaVn2Z6Ce2EfnSaWb) |
-| dweb.link | [Abrir reporte](https://dweb.link/ipfs/Qmc7Vf31uLYYBtoQChRByMykPBe29LaVn2Z6Ce2EfnSaWb) |
-| inbrowser.link (recommended) | [Abrir reporte](https://bafybeigmutkiwjw2asolggxwojdqo5chj7r73cviikdubb6bqlfray4ksa.ipfs.inbrowser.link/) |
+| ipfs.io | [Abrir reporte](https://ipfs.io/ipfs/QmR31nCFj8nKbBJS4X2CaspdCrVWMi12k1Ft1CZe9vfT4X) |
+| dweb.link | [Abrir reporte](https://dweb.link/ipfs/QmR31nCFj8nKbBJS4X2CaspdCrVWMi12k1Ft1CZe9vfT4X) |
+| inbrowser.link (recommended) | [Abrir reporte](https://bafybeibibzxedpihmzut6wwywe3sbgix32k7jbpedvunenbwnfjdn4fx6q.ipfs.inbrowser.link/) |
 
 > El CID se actualiza automáticamente cada 12 horas. Los CIDs anteriores permanecen accesibles para siempre.
 
