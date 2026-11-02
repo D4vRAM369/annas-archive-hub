@@ -40,6 +40,7 @@ jobs:
         env:
           PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
           PINATA_API_SECRET: ${{ secrets.PINATA_API_SECRET }}
+          FILEBASE_TOKEN: ${{ secrets.FILEBASE_TOKEN }}  # opcional: copia de respaldo
         run: python run.py
 
       - name: Update GitHub repository homepage

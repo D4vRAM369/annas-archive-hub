@@ -56,12 +56,18 @@ PROJECT_TAG = "annas-archive-hub"
 
 PINATA_API = "https://api.pinata.cloud"
 
+# Segundo proveedor (copia de respaldo). Estándar "IPFS Pinning Service API":
+# basta un POST con el CID y Filebase lo descarga desde la red (Pinata lo anuncia en IPNI).
+FILEBASE_API = "https://api.filebase.io/v1/ipfs"
+MIRROR_NAME = f"{PROJECT_TAG}-report"
+
 
 class IPFSPublisher:
     def __init__(self):
         self.report_file = f"{DATA_DIR}/current_report.json"
         self.pinata_key = os.getenv("PINATA_API_KEY", "")
         self.pinata_secret = os.getenv("PINATA_API_SECRET", "")
+        self.filebase_token = os.getenv("FILEBASE_TOKEN", "")
         try:
             self.keep_last = int(os.getenv("PINATA_KEEP_LAST", "10"))
         except ValueError:
@@ -90,6 +96,8 @@ class IPFSPublisher:
                 print(f"  [+] Acceso público: {PUBLIC_GATEWAYS[0].format(cid=cid)}")
                 # Rotación: liberar cuota borrando pins antiguos del proyecto
                 self._rotate_old_pins()
+                # Copia en un segundo proveedor (best-effort, nunca rompe el pipeline)
+                self._mirror_to_filebase(cid)
                 return cid
             print("  [!] Pinata falló, intentando daemon local...")
         else:
@@ -256,6 +264,47 @@ class IPFSPublisher:
         except Exception as e:
             print(f"    [!] Unpin {cid} excepción: {e}")
         return False
+
+    # ── Segundo proveedor: Filebase (Pinning Service API) ──────────────────
+    def _filebase(self, method, path, **kw):
+        return getattr(http, method)(
+            f"{FILEBASE_API}{path}",
+            headers={"Authorization": f"Bearer {self.filebase_token}"},
+            timeout=30, **kw,
+        )
+
+    def _mirror_to_filebase(self, cid):
+        """Pinea el CID en Filebase y rota los antiguos. Devuelve True si quedó pineado/encolado."""
+        if not self.filebase_token:
+            print("  [*] FILEBASE_TOKEN no configurado: sin copia de respaldo.")
+            return False
+        try:
+            # Evitar duplicados si el reporte no cambió y el CID es el mismo
+            r = self._filebase("get", "/pins", params={"cid": cid, "limit": 1})
+            if r.status_code == 200 and r.json().get("count", 0) > 0:
+                print(f"  [*] Filebase ya tiene {cid}")
+            else:
+                r = self._filebase("post", "/pins", json={"cid": cid, "name": f"{MIRROR_NAME}-{cid[:8]}"})
+                if r.status_code not in (200, 201, 202):
+                    print(f"  [!] Filebase error {r.status_code}: {r.text[:150]}")
+                    return False
+                print(f"  [+] Copia solicitada en Filebase: {cid}")
+            self._rotate_filebase()
+            return True
+        except Exception as e:
+            print(f"  [!] Filebase excepción: {e}")
+            return False
+
+    def _rotate_filebase(self):
+        """Conserva los keep_last pins más recientes del proyecto (la spec ordena por fecha desc)."""
+        r = self._filebase("get", "/pins", params={"name": MIRROR_NAME, "match": "partial", "limit": 1000})
+        if r.status_code != 200:
+            print(f"  [!] Filebase no pudo listar pins: {r.status_code}")
+            return
+        results = sorted(r.json().get("results", []), key=lambda x: x.get("created", ""), reverse=True)
+        for old in results[self.keep_last:]:
+            d = self._filebase("delete", f"/pins/{old['requestid']}")
+            print(f"    [*] Filebase borra {old.get('pin', {}).get('cid')}: {d.status_code}")
 
     def _publish_local(self):
         """
