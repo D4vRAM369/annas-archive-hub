@@ -1,0 +1,6 @@
+{
+  "name": "anna-hub-ipns",
+  "private": true,
+  "type": "module",
+  "dependencies": { "w3name": "1.1.3" }
+}

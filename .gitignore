@@ -64,3 +64,4 @@ QUICK_REFERENCE.md
 # Scripts de experimentación (no forman parte del proyecto)
 scripts/
 node_modules/
+!scripts/
