@@ -42,7 +42,8 @@ jobs:
           GH_PAT: ${{ secrets.MY_PAT }}
         run: |
           CID=$(cat data/ipfs_hash.txt)
-          NEW_URL="https://gateway.pinata.cloud/ipfs/$CID"
+          # Mismo helper que usa el README: CID v1 en subdominio de inbrowser.link
+          NEW_URL=$(python -c "from core.ipfs_publisher import browser_url; print(browser_url('$CID'))")
           echo "Intentando actualizar link a: $NEW_URL"
           
           # Ahora usamos el GH_PAT con permisos de Administration
