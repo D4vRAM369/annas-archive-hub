@@ -7,11 +7,12 @@ Gracias por querer contribuir a Anna's Archive Hub.
 ## Cómo empezar
 
 ```bash
-git clone https://github.com/annas-archive-hub/anna-archive-hub
-cd anna-archive-hub
+git clone https://github.com/D4vRAM369/annas-archive-hub
+cd annas-archive-hub
 python -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements.txt pytest
 cp .env.example .env
+python -m pytest tests -q   # deben pasar todos antes de abrir un PR
 ```
 
 ---
@@ -39,6 +40,8 @@ Añádela a `crawl_all()` dentro de `SocialCrawler`.
 ### Mejorar la verificación de dominios
 El verificador está en `core/domain_tester.py`. Usa `curl_cffi` con impersonación de Chrome. Si encuentras dominios que dan falsos negativos, abre un Issue con el dominio y el código de respuesta que obtienes.
 
+Cada dominio activo se **clasifica** con `classify()` (Anna's Archive, Libgen o Z-Library) mirando el host final y el `<title>`; lo que no se reconoce se descarta. Si un espejo legítimo no aparece, abre un Issue con el dominio y el `<title>` que muestra. Los dominios sospechosos o maliciosos se añaden a `BLOCKED_DOMAINS` en `config/settings.py` **con motivo y fecha**.
+
 ### Reportar canales de Telegram verificados
 Si encuentras un canal de Telegram legítimo (no spam, activo, comparte dominios reales), abre un Issue con el nombre del canal y por qué lo consideras verificado.
 
@@ -46,6 +49,7 @@ Si encuentras un canal de Telegram legítimo (no spam, activo, comparte dominios
 
 ## Convenciones
 
+- El README (CID, links y tablas de dominios) lo reescribe el robot cada 12 h: no lo edites a mano en esas zonas
 - **Python 3.12+**
 - Sin credenciales en el código — usar variables de entorno vía `.env`
 - Cada función de fuente devuelve `list[str]` de dominios sin `https://`
