@@ -1,16 +1,16 @@
 {
-  "timestamp": "2026-11-02T14:12:09.666614",
+  "timestamp": "2026-11-02T14:13:48.690120",
   "active_auto": [
-    "https://annas-archive.pk/",
+    "https://annas-archive.gl/",
     "https://annas-archive.li/",
     "https://annas-archive.gd/",
-    "https://annas-archive.gl/"
+    "https://annas-archive.pk/"
   ],
   "related_services": {
     "libgen": [
-      "https://libgen.vg/",
       "https://libgen.gl/",
       "https://libgen.bz/",
+      "https://libgen.vg/",
       "https://libgen.la/"
     ],
     "zlibrary": [
