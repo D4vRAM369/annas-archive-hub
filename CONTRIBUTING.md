@@ -1,10 +1,10 @@
-# Guía para contribuidores
+# Contributing Guide
 
-Gracias por querer contribuir a Anna's Archive Hub.
+Thanks for wanting to contribute to Anna's Archive Hub.
 
 ---
 
-## Cómo empezar
+## Getting started
 
 ```bash
 git clone https://github.com/D4vRAM369/annas-archive-hub
@@ -12,52 +12,52 @@ cd annas-archive-hub
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt pytest
 cp .env.example .env
-python -m pytest tests -q   # deben pasar todos antes de abrir un PR
+python -m pytest tests -q   # all tests must pass before opening a PR
 ```
 
 ---
 
-## Tipos de contribución
+## Ways to contribute
 
-### Añadir nuevos dominios
-Si encuentras un dominio activo que el sistema no detecta:
-1. Abre un Issue con el dominio y cómo lo encontraste
-2. O ejecuta `python main.py` → opción 3 para añadirlo localmente
+### Add new domains
+If you find an active domain the system doesn't detect:
+1. Open an Issue with the domain and how you found it
+2. Or run `python main.py` → option 3 to add it locally
 
-### Añadir nuevas fuentes de descubrimiento
-Las fuentes están en `core/social_crawler.py`. Cada fuente es una función independiente que devuelve `list[str]`:
+### Add new discovery sources
+Sources live in `core/social_crawler.py`. Each source is an independent function that returns `list[str]`:
 
 ```python
-def _crawl_mi_fuente() -> list[str]:
+def _crawl_my_source() -> list[str]:
     candidates = []
-    # ... lógica de scraping
-    candidates.extend(extract_domains(texto))
+    # ... scraping logic
+    candidates.extend(extract_domains(text))
     return candidates
 ```
 
-Añádela a `crawl_all()` dentro de `SocialCrawler`.
+Add it to `crawl_all()` inside `SocialCrawler`.
 
-### Mejorar la verificación de dominios
-El verificador está en `core/domain_tester.py`. Usa `curl_cffi` con impersonación de Chrome. Si encuentras dominios que dan falsos negativos, abre un Issue con el dominio y el código de respuesta que obtienes.
+### Improve domain verification
+The verifier is in `core/domain_tester.py`. It uses `curl_cffi` with Chrome impersonation. If you find domains that give false negatives, open an Issue with the domain and the response code you get.
 
-Cada dominio activo se **clasifica** con `classify()` (Anna's Archive, Libgen o Z-Library) mirando el host final y el `<title>`; lo que no se reconoce se descarta. Si un espejo legítimo no aparece, abre un Issue con el dominio y el `<title>` que muestra. Los dominios sospechosos o maliciosos se añaden a `BLOCKED_DOMAINS` en `config/settings.py` **con motivo y fecha**.
+Every active domain is **classified** by `classify()` (Anna's Archive, Libgen or Z-Library) using the final host and the page `<title>`; anything not recognized is discarded. If a legitimate mirror doesn't show up, open an Issue with the domain and the `<title>` it displays. Suspicious or malicious domains are added to `BLOCKED_DOMAINS` in `config/settings.py` **with the reason and date**.
 
-### Reportar canales de Telegram verificados
-Si encuentras un canal de Telegram legítimo (no spam, activo, comparte dominios reales), abre un Issue con el nombre del canal y por qué lo consideras verificado.
+### Report verified Telegram channels
+If you find a legitimate Telegram channel (not spam, active, shares real domains), open an Issue with the channel name and why you consider it verified.
 
 ---
 
-## Convenciones
+## Conventions
 
-- El README (CID, links y tablas de dominios) lo reescribe el robot cada 12 h: no lo edites a mano en esas zonas
+- The README (CID, links and domain tables) is rewritten by the bot every 12 h: don't edit those zones by hand
 - **Python 3.12+**
-- Sin credenciales en el código — usar variables de entorno vía `.env`
-- Cada función de fuente devuelve `list[str]` de dominios sin `https://`
-- Los dominios siempre en minúsculas
+- No credentials in code — use environment variables via `.env`
+- Each source function returns a `list[str]` of domains without `https://`
+- Domains are always lowercase
 
 ## Pull Requests
 
-1. Fork del repositorio
-2. Rama descriptiva: `feat/nueva-fuente-lemmy`, `fix/regex-tld`, etc.
-3. Un PR por cambio lógico
-4. Describe qué hace y por qué en la descripción del PR
+1. Fork the repository
+2. Use a descriptive branch name: `feat/new-lemmy-source`, `fix/tld-regex`, etc.
+3. One PR per logical change
+4. Describe what it does and why in the PR description
