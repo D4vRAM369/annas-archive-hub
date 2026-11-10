@@ -16,13 +16,13 @@
 
 ## 📡 Latest Report (IPFS — Immutable)
 
-**Current CID:** `QmYabJkt2AEAakx7pcKckxSn1J7vv8mvviRQbRyKkWw16K`
+**Current CID:** `QmZMNtSin6Lv6UVhNMKS35mcU7k1ZDW9rTiiTr6ygnmHvy`
 
 | Gateway | Link |
 |---------|------|
-| ipfs.io | [Open report](https://ipfs.io/ipfs/QmYabJkt2AEAakx7pcKckxSn1J7vv8mvviRQbRyKkWw16K) |
-| dweb.link | [Open report](https://dweb.link/ipfs/QmYabJkt2AEAakx7pcKckxSn1J7vv8mvviRQbRyKkWw16K) |
-| inbrowser.link (recommended) | [Open report](https://bafybeieye4tt3zehq26c4y5op7mbou5tpsjralwa5dzfky2tmwbb3lyw2q.ipfs.inbrowser.link/) |
+| ipfs.io | [Open report](https://ipfs.io/ipfs/QmZMNtSin6Lv6UVhNMKS35mcU7k1ZDW9rTiiTr6ygnmHvy) |
+| dweb.link | [Open report](https://dweb.link/ipfs/QmZMNtSin6Lv6UVhNMKS35mcU7k1ZDW9rTiiTr6ygnmHvy) |
+| inbrowser.link (recommended) | [Open report](https://bafybeifdua7u2o4cc3dqhj7b4hzoenwmol5rz5xt2cucixv4guea4fgibi.ipfs.inbrowser.link/) |
 
 > 🔗 **Permanent link, always current (no IPFS needed):** [https://raw.githubusercontent.com/D4vRAM369/annas-archive-hub/main/data/current_report.json](https://raw.githubusercontent.com/D4vRAM369/annas-archive-hub/main/data/current_report.json)
 >
@@ -39,6 +39,7 @@
 |--------|--------|
 | annas-archive.gd | ✅ Active |
 | annas-archive.gl | ✅ Active |
+| annas-archive.li | ✅ Active |
 | annas-archive.pk | ✅ Active |
 
 ### Libgen (related service)
@@ -46,7 +47,15 @@
 | Domain | Status |
 |--------|--------|
 | libgen.bz | ✅ Active |
+| libgen.gl | ✅ Active |
 | libgen.la | ✅ Active |
+| libgen.vg | ✅ Active |
+
+### Z-Library (related service)
+
+| Domain | Status |
+|--------|--------|
+| welib.org | ✅ Active |
 
 > ⚠️ Z-Library mirrors z-lib.gl, go-to-library.sk, z-lib.gd, z-library.sk, 1lib.sk require opening in a browser due to Cloudflare protection (listed as `manual_verify` in the report).
 > 🌍 Domains are verified from GitHub servers (USA). Your ISP/country may block some (e.g. `.gd`/`.li` in Spain): try another.
