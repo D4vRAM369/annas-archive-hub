@@ -70,5 +70,11 @@
     "timestamp": "2026-08-09T12:51:06.798939",
     "votes": 0,
     "verified": false
+  },
+  "welib.gl": {
+    "proposed_by": "auto-crawler",
+    "timestamp": "2026-11-13T19:16:53.983189",
+    "votes": 0,
+    "verified": false
   }
 }
