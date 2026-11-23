@@ -14,13 +14,13 @@
 
 ## 📡 Último Reporte (IPFS — Inmutable)
 
-**CID actual:** `Qmd7ewZNMYEWU73Lc5RofFnJE72kGvRCDtRbJZpUrtgGG7`
+**CID actual:** `QmU2nrycjDpwACV3Y9LmBrCmeh2JSANfPiZx3EABkW3dbi`
 
 | Gateway | Enlace |
 |---------|--------|
-| ipfs.io | [Abrir reporte](https://ipfs.io/ipfs/Qmd7ewZNMYEWU73Lc5RofFnJE72kGvRCDtRbJZpUrtgGG7) |
-| dweb.link | [Abrir reporte](https://dweb.link/ipfs/Qmd7ewZNMYEWU73Lc5RofFnJE72kGvRCDtRbJZpUrtgGG7) |
-| inbrowser.link (recommended) | [Abrir reporte](https://bafybeig3rmcaakcqn7zuzp2tw5datqlha37jdhjecf7axiua7e7wpwjkwa.ipfs.inbrowser.link/) |
+| ipfs.io | [Abrir reporte](https://ipfs.io/ipfs/QmU2nrycjDpwACV3Y9LmBrCmeh2JSANfPiZx3EABkW3dbi) |
+| dweb.link | [Abrir reporte](https://dweb.link/ipfs/QmU2nrycjDpwACV3Y9LmBrCmeh2JSANfPiZx3EABkW3dbi) |
+| inbrowser.link (recommended) | [Abrir reporte](https://bafybeicuslrlgxl23ezbsufcjkcweiq7e636or2xci62dxalrpjjvh435u.ipfs.inbrowser.link/) |
 
 > 🔗 **Enlace permanente, siempre actualizado (sin IPFS):** [https://raw.githubusercontent.com/D4vRAM369/annas-archive-hub/main/data/current_report.json](https://raw.githubusercontent.com/D4vRAM369/annas-archive-hub/main/data/current_report.json)
 >
